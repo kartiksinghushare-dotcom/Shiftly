@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#FBFAF7">
+  <title>Shiftly</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-bg: #FBFAF7;
+      --color-surface: #FFFFFF;
+      --color-text: #1C1C1A;
+      --color-text-muted: #6B6A65;
+      --color-text-faint: #9C9A92;
+      --color-border: #E8E5DD;
+      --color-border-strong: #C8C5BB;
+      --color-accent: #2C5A4F;
+      --color-accent-hover: #1E4036;
+      --color-accent-soft: #E8F0EC;
+      --color-danger: #A0392C;
+      --color-danger-soft: #FBEAE7;
+
+      --font-display: "Fraunces", "Noto Naskh Arabic", Georgia, serif;
+      --font-body: "Plus Jakarta Sans", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+      --space-12: 48px;
+
+      --radius-sm: 6px; --radius: 10px; --radius-lg: 14px;
+      --max-content-width: 480px;
+      --ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--color-text);
+      background: var(--color-bg);
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    input { font-family: inherit; }
+    [hidden] { display: none !important; }
+
+    /* Loading */
+    .loading-screen {
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--color-bg); z-index: 100;
+    }
+    .loader {
+      width: 28px; height: 28px;
+      border: 2px solid var(--color-border);
+      border-top-color: var(--color-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Login page */
+    .login-page {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--space-6);
+      background:
+        radial-gradient(circle at 80% -10%, #F0EDE2 0%, transparent 50%),
+        radial-gradient(circle at -10% 110%, #EBE8DD 0%, transparent 50%),
+        var(--color-bg);
+    }
+    .login-card {
+      width: 100%; max-width: 380px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-10) var(--space-8);
+      display: flex; flex-direction: column; gap: var(--space-8);
+    }
+    .brand { text-align: center; }
+    .brand-mark {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 40px;
+      font-variation-settings: "opsz" 80;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .brand-tagline {
+      margin: var(--space-1) 0 0;
+      color: var(--color-text-muted);
+      font-size: 14px;
+    }
+    .brand-small {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 20px;
+      font-variation-settings: "opsz" 24;
+      letter-spacing: -0.01em;
+    }
+
+    /* Forms */
+    .form { display: flex; flex-direction: column; gap: var(--space-5); }
+    .field { display: flex; flex-direction: column; gap: var(--space-2); }
+    .field label {
+      font-size: 13px; font-weight: 500;
+      color: var(--color-text-muted);
+      letter-spacing: 0.01em;
+    }
+    .field input {
+      appearance: none;
+      font-size: 16px;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-surface);
+      color: var(--color-text);
+      transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+    }
+    .field input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-soft);
+    }
+
+    /* Buttons */
+    .btn {
+      appearance: none; border: none;
+      font-size: 15px; font-weight: 500;
+      padding-block: var(--space-3); padding-inline: var(--space-5);
+      border-radius: var(--radius);
+      transition: background 150ms var(--ease), transform 80ms var(--ease);
+      min-height: 48px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--color-accent); color: #fff; }
+    .btn-primary:not(:disabled):hover { background: var(--color-accent-hover); }
+    .btn-link {
+      background: none; border: none;
+      color: var(--color-text-muted);
+      font-size: 14px;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+    }
+    .btn-link:hover { color: var(--color-text); }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--space-2);
+      font-size: 13px; color: var(--color-text-muted);
+    }
+    .lang-btn {
+      background: none; border: none;
+      color: inherit; font-size: inherit; font-family: inherit;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+    }
+    .lang-btn.active { color: var(--color-accent); font-weight: 500; }
+    .lang-btn:hover { color: var(--color-text); }
+    .lang-sep { color: var(--color-text-faint); }
+
+    /* Messages */
+    .error-message {
+      background: var(--color-danger-soft);
+      color: var(--color-danger);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* App shell */
+    .app-shell {
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+    }
+    .app-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-4) var(--space-5);
+      border-block-end: 1px solid var(--color-border);
+      background: var(--color-bg);
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 10;
+    }
+    .user-menu {
+      display: flex; align-items: center; gap: var(--space-3);
+      font-size: 14px;
+    }
+    .user-name { font-weight: 500; }
+    .user-role {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-accent);
+      padding: 2px var(--space-2);
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+    }
+    .app-main {
+      flex: 1; width: 100%;
+      max-width: var(--max-content-width);
+      margin-inline: auto;
+      padding: var(--space-6) var(--space-5);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 28px;
+      font-variation-settings: "opsz" 48;
+      letter-spacing: -0.01em;
+      margin: 0 0 var(--space-2);
+    }
+    .page-subtitle {
+      color: var(--color-text-muted);
+      font-size: 14px;
+      margin: 0 0 var(--space-8);
+    }
+
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-5);
+      margin-block-end: var(--space-4);
+    }
+    .card h3 {
+      margin: 0 0 var(--space-2);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .card p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-12) var(--space-5);
+      color: var(--color-text-muted);
+    }
+    .empty-state p { margin: 0 0 var(--space-2); }
+
+    [dir="rtl"] .brand-mark { letter-spacing: 0; }
+  </style>
+</head>
+
+<body>
+  <!-- Loading screen (visible by default) -->
+  <div class="loading-screen" id="loading-screen">
+    <span class="loader" aria-label="Loading"></span>
+  </div>
+
+  <!-- LOGIN VIEW -->
+  <main class="login-page" id="login-view" hidden>
+    <div class="login-card">
+      <div class="brand">
+        <h1 class="brand-mark">Shiftly</h1>
+        <p class="brand-tagline" data-i18n="login.tagline">Daily team audit</p>
+      </div>
+      <form id="login-form" class="form" novalidate>
+        <div class="field">
+          <label for="email" data-i18n="login.email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="login.password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" id="login-btn" class="btn btn-primary" data-i18n="login.signin">Sign in</button>
+        <div id="login-error" class="error-message" hidden></div>
+      </form>
+      <div class="lang-toggle">
+        <button type="button" class="lang-btn" data-lang="en">English</button>
+        <span class="lang-sep">·</span>
+        <button type="button" class="lang-btn" data-lang="ar">العربية</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- APP VIEW -->
+  <div class="app-shell" id="app-view" hidden>
+    <header class="app-header">
+      <div class="brand-small">Shiftly</div>
+      <div class="user-menu">
+        <span id="user-name" class="user-name"></span>
+        <span id="user-role" class="user-role"></span>
+        <button type="button" id="logout-btn" class="btn-link" data-i18n="app.logout">Logout</button>
+      </div>
+    </header>
+    <main class="app-main" id="app-main"></main>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    // ========== CONFIG ==========
+    const SUPABASE_URL = "https://bxuhmyxfzoqvmukausjd.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4dWhteXhmem9xdm11a2F1c2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODgxMTgsImV4cCI6MjA5NDc2NDExOH0._-WHdcw2p1LR09imPkfGx7F7VfqwHJHkcW6b0hSD00k";
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+    });
+
+    // ========== TRANSLATIONS ==========
+    const STRINGS = {
+      en: {
+        login: {
+          tagline: "Daily team audit",
+          email: "Email",
+          password: "Password",
+          signin: "Sign in",
+          signing_in: "Signing in…",
+          error_generic: "Could not sign in. Check your details and try again."
+        },
+        app: { logout: "Logout" },
+        role: { admin: "Admin", manager: "Manager", user: "User" },
+        home: {
+          welcome: "Welcome",
+          admin_subtitle: "Manage users, teams, and audit activity across the company.",
+          manager_subtitle: "Review submissions and manage checklists for your teams.",
+          user_subtitle: "Complete your checklist for the current shift.",
+          users: "Users",
+          users_hint: "Create and manage user accounts. Coming in the next build.",
+          teams: "Teams",
+          teams_hint: "Create teams and assign managers. Coming in the next build.",
+          audit_log: "Audit log",
+          audit_hint: "Review admin actions and system changes.",
+          no_teams_yet: "You are not assigned to any teams yet.",
+          contact_admin: "Contact your admin to get set up.",
+          no_checklists_yet: "No checklists assigned yet.",
+          contact_manager: "Your manager will set them up shortly."
+        }
+      },
+      ar: {
+        login: {
+          tagline: "تدقيق يومي للفِرَق",
+          email: "البريد الإلكتروني",
+          password: "كلمة المرور",
+          signin: "تسجيل الدخول",
+          signing_in: "جارٍ تسجيل الدخول…",
+          error_generic: "تعذّر تسجيل الدخول. تحقّق من بياناتك وحاول مجددًا."
+        },
+        app: { logout: "تسجيل الخروج" },
+        role: { admin: "مسؤول", manager: "مدير", user: "مستخدم" },
+        home: {
+          welcome: "مرحبًا",
+          admin_subtitle: "إدارة المستخدمين والفِرَق ونشاط التدقيق عبر الشركة.",
+          manager_subtitle: "مراجعة الإرساليات وإدارة قوائم التحقق لفِرَقك.",
+          user_subtitle: "أكمل قائمة التحقق لمناوبتك الحالية.",
+          users: "المستخدمون",
+          users_hint: "إنشاء وإدارة حسابات المستخدمين. متوفّر في الإصدار القادم.",
+          teams: "الفِرَق",
+          teams_hint: "إنشاء الفِرَق وتعيين المديرين. متوفّر في الإصدار القادم.",
+          audit_log: "سجل التدقيق",
+          audit_hint: "مراجعة إجراءات المسؤول وتغييرات النظام.",
+          no_teams_yet: "لم يتم تعيينك في أي فريق بعد.",
+          contact_admin: "تواصل مع المسؤول لإعداد حسابك.",
+          no_checklists_yet: "لا توجد قوائم تحقق معيّنة بعد.",
+          contact_manager: "سيقوم مديرك بإعدادها قريبًا."
+        }
+      }
+    };
+
+    // ========== I18N ==========
+    const I18n = (() => {
+      let current = "en";
+
+      function t(key, fallback) {
+        const parts = key.split(".");
+        let v = STRINGS[current];
+        for (const p of parts) {
+          if (v && typeof v === "object" && p in v) v = v[p];
+          else return fallback ?? key;
+        }
+        return typeof v === "string" ? v : (fallback ?? key);
+      }
+
+      function apply() {
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          el.textContent = t(el.getAttribute("data-i18n"), el.textContent);
+        });
+      }
+
+      function direction() {
+        document.documentElement.dir = current === "ar" ? "rtl" : "ltr";
+        document.documentElement.lang = current;
+      }
+
+      function setLang(lang) {
+        if (!STRINGS[lang]) lang = "en";
+        current = lang;
+        localStorage.setItem("shiftly_lang", lang);
+        direction();
+        apply();
+        document.querySelectorAll(".lang-btn").forEach(btn => {
+          btn.classList.toggle("active", btn.dataset.lang === lang);
+        });
+        // persist to profile if logged in
+        sb.auth.getSession().then(({ data: { session } }) => {
+          if (session) sb.from("profiles").update({ preferred_language: lang }).eq("id", session.user.id);
+        });
+      }
+
+      function init() {
+        const saved = localStorage.getItem("shiftly_lang") || "en";
+        setLang(saved);
+        document.querySelectorAll(".lang-btn").forEach(btn => {
+          btn.addEventListener("click", () => setLang(btn.dataset.lang));
+        });
+      }
+
+      return { init, t, setLang, getLang: () => current };
+    })();
+
+    // ========== AUTH ==========
+    const Auth = (() => {
+      async function getCurrentProfile() {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) return null;
+        const { data: profile, error } = await sb
+          .from("profiles")
+          .select("id, full_name, email, role, preferred_language, active")
+          .eq("id", session.user.id)
+          .single();
+        if (error || !profile || !profile.active) {
+          await sb.auth.signOut();
+          return null;
+        }
+        return profile;
+      }
+
+      async function login(email, password) {
+        const { error } = await sb.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password
+        });
+        if (error) throw error;
+        const profile = await getCurrentProfile();
+        if (!profile) throw new Error("Your account isn't active. Contact your admin.");
+        return profile;
+      }
+
+      async function logout() {
+        await sb.auth.signOut();
+        View.showLogin();
+      }
+
+      return { getCurrentProfile, login, logout };
+    })();
+
+    // ========== VIEW ==========
+    const View = (() => {
+      function escape(s) {
+        return String(s).replace(/[&<>"']/g, c => (
+          { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]
+        ));
+      }
+
+      function showLogin() {
+        document.getElementById("loading-screen").hidden = true;
+        document.getElementById("app-view").hidden = true;
+        document.getElementById("login-view").hidden = false;
+        document.getElementById("login-form").reset();
+        document.getElementById("login-error").hidden = true;
+        const btn = document.getElementById("login-btn");
+        btn.disabled = false;
+        btn.textContent = I18n.t("login.signin");
+      }
+
+      function showApp(profile) {
+        document.getElementById("loading-screen").hidden = true;
+        document.getElementById("login-view").hidden = true;
+        document.getElementById("app-view").hidden = false;
+
+        document.getElementById("user-name").textContent = profile.full_name;
+        document.getElementById("user-role").textContent = I18n.t(`role.${profile.role}`);
+
+        renderHome(profile);
+      }
+
+      function renderHome(profile) {
+        const main = document.getElementById("app-main");
+        const name = escape(profile.full_name.split(" ")[0]);
+        let content = "";
+
+        if (profile.role === "admin") {
+          content = `
+            <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
+            <p class="page-subtitle">${I18n.t("home.admin_subtitle")}</p>
+            <div class="card">
+              <h3>${I18n.t("home.users")}</h3>
+              <p>${I18n.t("home.users_hint")}</p>
+            </div>
+            <div class="card">
+              <h3>${I18n.t("home.teams")}</h3>
+              <p>${I18n.t("home.teams_hint")}</p>
+            </div>
+            <div class="card">
+              <h3>${I18n.t("home.audit_log")}</h3>
+              <p>${I18n.t("home.audit_hint")}</p>
+            </div>
+          `;
+        } else if (profile.role === "manager") {
+          content = `
+            <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
+            <p class="page-subtitle">${I18n.t("home.manager_subtitle")}</p>
+            <div class="empty-state">
+              <p>${I18n.t("home.no_teams_yet")}</p>
+              <p>${I18n.t("home.contact_admin")}</p>
+            </div>
+          `;
+        } else {
+          content = `
+            <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
+            <p class="page-subtitle">${I18n.t("home.user_subtitle")}</p>
+            <div class="empty-state">
+              <p>${I18n.t("home.no_checklists_yet")}</p>
+              <p>${I18n.t("home.contact_manager")}</p>
+            </div>
+          `;
+        }
+
+        main.innerHTML = content;
+      }
+
+      return { showLogin, showApp };
+    })();
+
+    // ========== INIT ==========
+    async function init() {
+      I18n.init();
+
+      document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const errBox = document.getElementById("login-error");
+        const btn = document.getElementById("login-btn");
+        errBox.hidden = true;
+        btn.disabled = true;
+        btn.textContent = I18n.t("login.signing_in");
+
+        try {
+          const profile = await Auth.login(
+            document.getElementById("email").value,
+            document.getElementById("password").value
+          );
+          if (profile.preferred_language && profile.preferred_language !== I18n.getLang()) {
+            I18n.setLang(profile.preferred_language);
+          }
+          View.showApp(profile);
+        } catch (err) {
+          errBox.textContent = err.message || I18n.t("login.error_generic");
+          errBox.hidden = false;
+          btn.disabled = false;
+          btn.textContent = I18n.t("login.signin");
+        }
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", () => Auth.logout());
+
+      const profile = await Auth.getCurrentProfile();
+      if (profile) {
+        if (profile.preferred_language && profile.preferred_language !== I18n.getLang()) {
+          I18n.setLang(profile.preferred_language);
+        }
+        View.showApp(profile);
+      } else {
+        View.showLogin();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>

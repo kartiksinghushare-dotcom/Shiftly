@@ -368,6 +368,184 @@
     .form-actions { display: flex; gap: var(--space-3); margin-block-start: var(--space-8); }
     .form-actions .btn { flex: 1; }
 
+    /* Day chips for checklist schedule */
+    .day-chips {
+      display: flex; gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+    .day-chip {
+      flex: 1; min-width: 40px;
+      padding: var(--space-3) var(--space-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-surface);
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      transition: all 150ms var(--ease);
+    }
+    .day-chip:hover { border-color: var(--color-border-strong); }
+    .day-chip.active {
+      background: var(--color-accent);
+      color: #fff;
+      border-color: var(--color-accent);
+    }
+
+    /* Compact two-column form row */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+    @media (max-width: 380px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    /* Item rows (checklist items in form) */
+    .items-list {
+      display: flex; flex-direction: column;
+      gap: var(--space-3);
+    }
+    .item-row {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+      display: flex; flex-direction: column;
+      gap: var(--space-3);
+    }
+    .item-row-header {
+      display: flex; align-items: center;
+      gap: var(--space-2);
+    }
+    .item-position {
+      font-size: 13px;
+      color: var(--color-text-faint);
+      font-weight: 500;
+      width: 24px;
+      flex-shrink: 0;
+    }
+    .item-row input[type="text"] {
+      flex: 1;
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-bg);
+      font-size: 15px;
+    }
+    .item-row input[type="text"]:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-soft);
+      background: var(--color-surface);
+    }
+    .item-remove {
+      background: none; border: none;
+      color: var(--color-text-faint);
+      cursor: pointer;
+      padding: var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .item-remove:hover {
+      color: var(--color-danger);
+      background: var(--color-danger-soft);
+    }
+    .item-options {
+      display: flex; flex-direction: column;
+      gap: var(--space-3);
+      padding-inline-start: 32px;
+    }
+    .item-toggle {
+      display: flex; align-items: center;
+      gap: var(--space-2);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .item-toggle input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--color-accent);
+      cursor: pointer;
+    }
+    .photo-counts {
+      display: flex; gap: var(--space-2);
+      align-items: center;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      padding-inline-start: var(--space-6);
+    }
+    .photo-counts input[type="number"] {
+      width: 56px;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      text-align: center;
+    }
+    .add-item-btn {
+      padding: var(--space-3);
+      border: 1px dashed var(--color-border-strong);
+      border-radius: var(--radius);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 150ms var(--ease);
+    }
+    .add-item-btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      background: var(--color-accent-soft);
+    }
+
+    /* Time input - inherit field styles, just narrower */
+    .field input[type="time"], .field input[type="number"] {
+      max-width: 200px;
+    }
+
+    /* Checklist card in list */
+    .checklist-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-4) var(--space-5);
+      margin-block-end: var(--space-3);
+      cursor: pointer;
+      transition: border-color 150ms var(--ease);
+      display: flex; flex-direction: column; gap: var(--space-2);
+    }
+    .checklist-card:hover { border-color: var(--color-border-strong); }
+    .checklist-card-inactive { opacity: 0.55; }
+    .checklist-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .checklist-card-name { font-weight: 500; font-size: 16px; }
+    .checklist-card-meta {
+      font-size: 13px; color: var(--color-text-muted);
+      display: flex; gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+    .checklist-card-schedule {
+      font-size: 12px; color: var(--color-text-faint);
+    }
+    .schedule-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px var(--space-2);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-muted);
+    }
+
     [dir="rtl"] .brand-mark { letter-spacing: 0; }
   </style>
 </head>
@@ -444,6 +622,7 @@
           manager_subtitle: "Review submissions and manage checklists for your reports.",
           user_subtitle: "Complete your checklist for the current shift.",
           users: "Users", users_hint: "Create users, assign managers, set roles and departments.",
+          checklists: "Checklists", checklists_hint: "Build and assign daily checklists to your team.",
           audit_log: "Audit log", audit_hint: "Review admin actions and system changes.",
           no_checklists_yet: "No checklists assigned yet.",
           contact_manager: "Your manager will set them up shortly.",
@@ -474,6 +653,57 @@
           active_hint: "Inactive users can\u2019t sign in.",
           save: "Save", cancel: "Cancel",
           save_failed: "Save failed"
+        },
+        checklists: {
+          title: "Checklists",
+          subtitle: "Create and manage daily checklists.",
+          new: "New checklist",
+          search_placeholder: "Search checklists",
+          empty: "No checklists yet. Create the first one.",
+          empty_search: "No checklists match your search.",
+          inactive: "Inactive",
+          items_label: "items",
+          assignees_label: "assigned",
+          daily: "Daily",
+          no_days: "No days set",
+          no_target: "No target time",
+          days_short: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+        },
+        checklist_form: {
+          new_title: "New checklist",
+          edit_title: "Edit checklist",
+          name: "Name",
+          name_placeholder: "e.g. Morning Opening",
+          description: "Description",
+          description_placeholder: "Optional details for the user",
+          schedule: "Schedule",
+          active_days: "Active days",
+          active_days_hint: "Days of the week this checklist runs.",
+          target_time: "Target time",
+          target_time_hint: "Optional. When should this be completed by.",
+          grace_minutes: "Grace minutes",
+          grace_hint: "Minutes after target before flagged as missed.",
+          items: "Items",
+          items_hint: "Tasks users will check off in order.",
+          add_item: "Add item",
+          no_items: "No items yet.",
+          item_placeholder: "e.g. Front door locked",
+          requires_photo: "Photo required",
+          requires_comment: "Comment required",
+          min_max_photos: "Photos: min / max",
+          remove: "Remove",
+          assignees: "Assigned to",
+          assignees_hint: "Users who will complete this each scheduled day.",
+          no_users: "No users available.",
+          status: "Status",
+          active_label: "Active",
+          active_hint: "Inactive checklists don\u2019t appear for users.",
+          save: "Save", cancel: "Cancel",
+          save_failed: "Save failed",
+          needs_name: "Please enter a name.",
+          needs_items: "Add at least one item.",
+          needs_assignees: "Assign at least one user.",
+          needs_days: "Select at least one active day."
         }
       },
       ar: {
@@ -503,6 +733,8 @@
           user_subtitle: "\u0623\u0643\u0645\u0644 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u062a\u062d\u0642\u0642 \u0644\u0645\u0646\u0627\u0648\u0628\u062a\u0643 \u0627\u0644\u062d\u0627\u0644\u064a\u0629.",
           users: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646",
           users_hint: "\u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u0648\u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u062f\u064a\u0631\u064a\u0646 \u0648\u0627\u0644\u0623\u062f\u0648\u0627\u0631 \u0648\u0627\u0644\u0623\u0642\u0633\u0627\u0645.",
+          checklists: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          checklists_hint: "\u0625\u0646\u0634\u0627\u0621 \u0648\u062a\u0639\u064a\u064a\u0646 \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u0627\u0644\u064a\u0648\u0645\u064a\u0629 \u0644\u0641\u0631\u064a\u0642\u0643.",
           audit_log: "\u0633\u062c\u0644 \u0627\u0644\u062a\u062f\u0642\u064a\u0642",
           audit_hint: "\u0645\u0631\u0627\u062c\u0639\u0629 \u0625\u062c\u0631\u0627\u0621\u0627\u062a \u0627\u0644\u0645\u0633\u0624\u0648\u0644 \u0648\u062a\u063a\u064a\u064a\u0631\u0627\u062a \u0627\u0644\u0646\u0638\u0627\u0645.",
           no_checklists_yet: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0642\u0648\u0627\u0626\u0645 \u062a\u062d\u0642\u0642 \u0645\u0639\u064a\u0651\u0646\u0629 \u0628\u0639\u062f.",
@@ -544,6 +776,58 @@
           save: "\u062d\u0641\u0638",
           cancel: "\u0625\u0644\u063a\u0627\u0621",
           save_failed: "\u0641\u0634\u0644 \u0627\u0644\u062d\u0641\u0638"
+        },
+        checklists: {
+          title: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          subtitle: "\u0625\u0646\u0634\u0627\u0621 \u0648\u0625\u062f\u0627\u0631\u0629 \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u0627\u0644\u064a\u0648\u0645\u064a\u0629.",
+          new: "\u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642 \u062c\u062f\u064a\u062f\u0629",
+          search_placeholder: "\u0627\u0628\u062d\u062b \u0641\u064a \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          empty: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0642\u0648\u0627\u0626\u0645 \u0628\u0639\u062f. \u0627\u0628\u062f\u0623 \u0628\u0625\u0646\u0634\u0627\u0621 \u0648\u0627\u062d\u062f\u0629.",
+          empty_search: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0646\u062a\u0627\u0626\u062c \u0645\u0637\u0627\u0628\u0642\u0629.",
+          inactive: "\u063a\u064a\u0631 \u0646\u0634\u0637",
+          items_label: "\u0639\u0646\u0627\u0635\u0631",
+          assignees_label: "\u0645\u0639\u064a\u0651\u0646",
+          daily: "\u064a\u0648\u0645\u064a",
+          no_days: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0623\u064a\u0627\u0645 \u0645\u062d\u062f\u062f\u0629",
+          no_target: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0648\u0642\u062a \u0645\u0633\u062a\u0647\u062f\u0641",
+          days_short: ["\u0623\u062d\u062f","\u0625\u062b\u0646","\u062b\u0644\u0627","\u0623\u0631\u0628","\u062e\u0645\u064a","\u062c\u0645\u0639","\u0633\u0628\u062a"]
+        },
+        checklist_form: {
+          new_title: "\u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642 \u062c\u062f\u064a\u062f\u0629",
+          edit_title: "\u062a\u0639\u062f\u064a\u0644 \u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642",
+          name: "\u0627\u0644\u0627\u0633\u0645",
+          name_placeholder: "\u0645\u062b\u0644: \u0627\u0641\u062a\u062a\u0627\u062d \u0627\u0644\u0635\u0628\u0627\u062d",
+          description: "\u0627\u0644\u0648\u0635\u0641",
+          description_placeholder: "\u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u062e\u062a\u064a\u0627\u0631\u064a\u0629 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
+          schedule: "\u0627\u0644\u062c\u062f\u0648\u0644",
+          active_days: "\u0627\u0644\u0623\u064a\u0627\u0645 \u0627\u0644\u0646\u0634\u0637\u0629",
+          active_days_hint: "\u0623\u064a\u0627\u0645 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0627\u0644\u062a\u064a \u062a\u0639\u0645\u0644 \u0641\u064a\u0647\u0627 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.",
+          target_time: "\u0627\u0644\u0648\u0642\u062a \u0627\u0644\u0645\u0633\u062a\u0647\u062f\u0641",
+          target_time_hint: "\u0627\u062e\u062a\u064a\u0627\u0631\u064a. \u0645\u062a\u0649 \u064a\u062c\u0628 \u0625\u0643\u0645\u0627\u0644 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.",
+          grace_minutes: "\u062f\u0642\u0627\u0626\u0642 \u0627\u0644\u0633\u0645\u0627\u062d",
+          grace_hint: "\u0627\u0644\u062f\u0642\u0627\u0626\u0642 \u0628\u0639\u062f \u0627\u0644\u0648\u0642\u062a \u0627\u0644\u0645\u0633\u062a\u0647\u062f\u0641 \u0642\u0628\u0644 \u0627\u0644\u0625\u0628\u0644\u0627\u063a \u0639\u0646 \u0627\u0644\u0641\u0642\u062f.",
+          items: "\u0627\u0644\u0639\u0646\u0627\u0635\u0631",
+          items_hint: "\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u062a\u064a \u0633\u064a\u0642\u0648\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0628\u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646\u0647\u0627.",
+          add_item: "\u0625\u0636\u0627\u0641\u0629 \u0639\u0646\u0635\u0631",
+          no_items: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0639\u0646\u0627\u0635\u0631 \u0628\u0639\u062f.",
+          item_placeholder: "\u0645\u062b\u0644: \u062a\u0645 \u0642\u0641\u0644 \u0627\u0644\u0628\u0627\u0628 \u0627\u0644\u0623\u0645\u0627\u0645\u064a",
+          requires_photo: "\u0627\u0644\u0635\u0648\u0631\u0629 \u0645\u0637\u0644\u0648\u0628\u0629",
+          requires_comment: "\u0627\u0644\u062a\u0639\u0644\u064a\u0642 \u0645\u0637\u0644\u0648\u0628",
+          min_max_photos: "\u0627\u0644\u0635\u0648\u0631: \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u062f\u0646\u0649 / \u0627\u0644\u0623\u0642\u0635\u0649",
+          remove: "\u0625\u0632\u0627\u0644\u0629",
+          assignees: "\u0645\u0639\u064a\u0651\u0646 \u0625\u0644\u0649",
+          assignees_hint: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0627\u0644\u0630\u064a\u0646 \u0633\u064a\u0643\u0645\u0644\u0648\u0646 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u064a\u0648\u0645\u064a\u064b\u0627.",
+          no_users: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0645\u062a\u0627\u062d\u0648\u0646.",
+          status: "\u0627\u0644\u062d\u0627\u0644\u0629",
+          active_label: "\u0646\u0634\u0637",
+          active_hint: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u063a\u064a\u0631 \u0627\u0644\u0646\u0634\u0637\u0629 \u0644\u0627 \u062a\u0638\u0647\u0631 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646.",
+          save: "\u062d\u0641\u0638",
+          cancel: "\u0625\u0644\u063a\u0627\u0621",
+          save_failed: "\u0641\u0634\u0644 \u0627\u0644\u062d\u0641\u0638",
+          needs_name: "\u0627\u0644\u0631\u062c\u0627\u0621 \u0625\u062f\u062e\u0627\u0644 \u0627\u0633\u0645.",
+          needs_items: "\u0623\u0636\u0641 \u0639\u0646\u0635\u0631\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644.",
+          needs_assignees: "\u0639\u064a\u0651\u0646 \u0645\u0633\u062a\u062e\u062f\u0645\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644.",
+          needs_days: "\u0627\u062e\u062a\u0631 \u064a\u0648\u0645\u064b\u0627 \u0646\u0634\u0637\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644."
         }
       }
     };
@@ -558,7 +842,7 @@
           if (v && typeof v === "object" && p in v) v = v[p];
           else return fb ?? key;
         }
-        return typeof v === "string" ? v : (fb ?? key);
+        return v ?? (fb ?? key);
       }
       function apply() {
         document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -654,6 +938,90 @@
           const { error: iErr } = await sb.from("user_managers").insert(rows);
           if (iErr) throw iErr;
         }
+      },
+      async listChecklists() {
+        const { data: checklists, error } = await sb.from("checklists")
+          .select("id, name, description, active, active_days, target_time, grace_minutes, created_by, created_at")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        const { data: items } = await sb.from("checklist_items").select("checklist_id");
+        const { data: assignees } = await sb.from("checklist_assignees").select("checklist_id");
+        const itemCount = {}; (items || []).forEach(i => itemCount[i.checklist_id] = (itemCount[i.checklist_id] || 0) + 1);
+        const asgnCount = {}; (assignees || []).forEach(a => asgnCount[a.checklist_id] = (asgnCount[a.checklist_id] || 0) + 1);
+        return checklists.map(c => ({
+          ...c,
+          item_count: itemCount[c.id] || 0,
+          assignee_count: asgnCount[c.id] || 0
+        }));
+      },
+      async getChecklist(id) {
+        const { data: checklist, error: cErr } = await sb.from("checklists")
+          .select("id, name, description, active, active_days, target_time, grace_minutes, created_by")
+          .eq("id", id).single();
+        if (cErr) throw cErr;
+        const { data: items, error: iErr } = await sb.from("checklist_items")
+          .select("id, position, label, requires_photo, requires_comment, min_photos, max_photos")
+          .eq("checklist_id", id).order("position");
+        if (iErr) throw iErr;
+        const { data: assignees, error: aErr } = await sb.from("checklist_assignees")
+          .select("user_id").eq("checklist_id", id);
+        if (aErr) throw aErr;
+        return { checklist, items: items || [], assignee_ids: (assignees || []).map(a => a.user_id) };
+      },
+      async saveChecklist(payload, existingId) {
+        const { data: { user } } = await sb.auth.getUser();
+        const meta = {
+          name: { en: payload.name },
+          description: payload.description ? { en: payload.description } : null,
+          active_days: payload.active_days,
+          target_time: payload.target_time || null,
+          grace_minutes: payload.grace_minutes || 0,
+          active: payload.active
+        };
+        let checklistId = existingId;
+        if (existingId) {
+          const { error } = await sb.from("checklists").update(meta).eq("id", existingId);
+          if (error) throw error;
+        } else {
+          const { data, error } = await sb.from("checklists")
+            .insert({ ...meta, created_by: user.id })
+            .select("id").single();
+          if (error) throw error;
+          checklistId = data.id;
+        }
+        // Replace items
+        const { error: delIErr } = await sb.from("checklist_items").delete().eq("checklist_id", checklistId);
+        if (delIErr) throw delIErr;
+        if (payload.items.length > 0) {
+          const rows = payload.items.map((it, idx) => ({
+            checklist_id: checklistId,
+            position: idx,
+            label: { en: it.label },
+            requires_photo: !!it.requires_photo,
+            requires_comment: !!it.requires_comment,
+            min_photos: it.requires_photo ? Math.max(0, parseInt(it.min_photos || 1)) : 0,
+            max_photos: it.requires_photo ? Math.max(parseInt(it.min_photos || 1), parseInt(it.max_photos || 5)) : 0
+          }));
+          const { error: insIErr } = await sb.from("checklist_items").insert(rows);
+          if (insIErr) throw insIErr;
+        }
+        // Replace assignees
+        const { error: delAErr } = await sb.from("checklist_assignees").delete().eq("checklist_id", checklistId);
+        if (delAErr) throw delAErr;
+        if (payload.assignee_ids.length > 0) {
+          const rows = payload.assignee_ids.map(uid => ({
+            checklist_id: checklistId,
+            user_id: uid,
+            added_by: user.id
+          }));
+          const { error: insAErr } = await sb.from("checklist_assignees").insert(rows);
+          if (insAErr) throw insAErr;
+        }
+        return checklistId;
+      },
+      async deleteChecklist(id) {
+        const { error } = await sb.from("checklists").delete().eq("id", id);
+        if (error) throw error;
       }
     };
 
@@ -693,6 +1061,12 @@
         else if (route === "user-form") {
           setHeader(data?.user ? I18n.t("user_form.edit_title") : I18n.t("user_form.new_title"), true);
           Views.userForm(data?.user || null);
+        } else if (route === "checklists") {
+          setHeader(I18n.t("checklists.title"), true);
+          Views.checklistsList();
+        } else if (route === "checklist-form") {
+          setHeader(data?.id ? I18n.t("checklist_form.edit_title") : I18n.t("checklist_form.new_title"), true);
+          Views.checklistForm(data?.id || null);
         } else if (route === "audit") {
           setHeader(I18n.t("home.audit_log"), true);
           Views.auditStub();
@@ -701,6 +1075,7 @@
       function back() {
         if (!last) return go("home");
         if (last.route === "user-form") return go("users");
+        if (last.route === "checklist-form") return go("checklists");
         return go("home");
       }
       function rerender() { if (last) go(last.route, last.data); }
@@ -720,6 +1095,10 @@
             <button class="card card-clickable" data-nav="users">
               <h3>${I18n.t("home.users")}</h3>
               <p>${I18n.t("home.users_hint")}</p>
+            </button>
+            <button class="card card-clickable" data-nav="checklists">
+              <h3>${I18n.t("home.checklists")}</h3>
+              <p>${I18n.t("home.checklists_hint")}</p>
             </button>
             <button class="card card-clickable" data-nav="audit">
               <h3>${I18n.t("home.audit_log")}</h3>
@@ -942,6 +1321,331 @@
             errBox.hidden = false;
             saveBtn.disabled = false;
             saveBtn.textContent = I18n.t("user_form.save");
+          }
+        });
+      },
+
+      async checklistsList() {
+        const main = document.getElementById("app-main");
+        main.innerHTML = `
+          <h1 class="page-title">${I18n.t("checklists.title")}</h1>
+          <p class="page-subtitle">${I18n.t("checklists.subtitle")}</p>
+          <div class="toolbar">
+            <input type="text" class="search-input" id="cl-search"
+                   placeholder="${escape(I18n.t("checklists.search_placeholder"))}">
+            <button class="btn btn-primary" id="new-cl-btn">+ ${escape(I18n.t("checklists.new"))}</button>
+          </div>
+          <div id="cl-list"><span class="loader-inline"></span></div>
+        `;
+        document.getElementById("new-cl-btn").addEventListener("click",
+          () => Router.go("checklist-form", { id: null }));
+
+        let lists = [];
+        try { lists = await API.listChecklists(); }
+        catch (e) {
+          document.getElementById("cl-list").innerHTML =
+            `<div class="error-message">${escape(e.message)}</div>`;
+          return;
+        }
+
+        const listEl = document.getElementById("cl-list");
+        const searchEl = document.getElementById("cl-search");
+        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
+        const formatSchedule = (days, time) => {
+          let label;
+          if (!days || days.length === 0) label = I18n.t("checklists.no_days");
+          else if (days.length === 7) label = I18n.t("checklists.daily");
+          else {
+            const names = I18n.t("checklists.days_short");
+            label = [...days].sort((a,b)=>a-b).map(d => names[d]).join(", ");
+          }
+          return time ? `${label} \u2022 ${time.slice(0,5)}` : label;
+        };
+
+        function render() {
+          const q = searchEl.value.trim().toLowerCase();
+          const filtered = !q ? lists : lists.filter(c =>
+            (localized(c.name) + " " + localized(c.description || "")).toLowerCase().includes(q));
+          if (filtered.length === 0) {
+            listEl.innerHTML = `<div class="empty-state"><p>${
+              q ? I18n.t("checklists.empty_search") : I18n.t("checklists.empty")
+            }</p></div>`;
+            return;
+          }
+          listEl.innerHTML = filtered.map(c => `
+            <div class="checklist-card ${c.active ? "" : "checklist-card-inactive"}" data-id="${c.id}">
+              <div class="checklist-card-top">
+                <span class="checklist-card-name">${escape(localized(c.name))}${
+                  c.active ? "" : `<span class="inactive-tag">${escape(I18n.t("checklists.inactive"))}</span>`
+                }</span>
+              </div>
+              <div class="checklist-card-meta">
+                <span class="schedule-badge">${escape(formatSchedule(c.active_days, c.target_time))}</span>
+                <span>${c.item_count} ${escape(I18n.t("checklists.items_label"))}</span>
+                <span>${c.assignee_count} ${escape(I18n.t("checklists.assignees_label"))}</span>
+              </div>
+            </div>
+          `).join("");
+          listEl.querySelectorAll(".checklist-card").forEach(el =>
+            el.addEventListener("click", () => Router.go("checklist-form", { id: el.dataset.id })));
+        }
+        searchEl.addEventListener("input", render);
+        render();
+      },
+
+      async checklistForm(checklistId) {
+        const isEdit = !!checklistId;
+        const main = document.getElementById("app-main");
+
+        let existing = null;
+        let assigneeIds = [];
+        if (isEdit) {
+          try {
+            const result = await API.getChecklist(checklistId);
+            existing = result.checklist;
+            existing.items = result.items;
+            assigneeIds = result.assignee_ids;
+          } catch (e) {
+            main.innerHTML = `<div class="error-message">${escape(e.message)}</div>`;
+            return;
+          }
+        }
+
+        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
+        const days = existing?.active_days || [0,1,2,3,4,5,6];
+        const targetTime = existing?.target_time ? existing.target_time.slice(0,5) : "";
+        const dayNames = I18n.t("checklists.days_short");
+
+        main.innerHTML = `
+          <h1 class="page-title">${isEdit ? I18n.t("checklist_form.edit_title") : I18n.t("checklist_form.new_title")}</h1>
+          <form id="cl-form" class="form" novalidate>
+            <div class="field">
+              <label>${escape(I18n.t("checklist_form.name"))}</label>
+              <input type="text" id="cl-name" required
+                     placeholder="${escape(I18n.t("checklist_form.name_placeholder"))}"
+                     value="${escape(existing ? localized(existing.name) : "")}">
+            </div>
+            <div class="field">
+              <label>${escape(I18n.t("checklist_form.description"))}</label>
+              <input type="text" id="cl-desc"
+                     placeholder="${escape(I18n.t("checklist_form.description_placeholder"))}"
+                     value="${escape(existing ? localized(existing.description || "") : "")}">
+            </div>
+
+            <div class="section-title">${escape(I18n.t("checklist_form.schedule"))}</div>
+            <div class="field">
+              <label>${escape(I18n.t("checklist_form.active_days"))}</label>
+              <div class="day-chips" id="cl-days">
+                ${dayNames.map((d, i) => `
+                  <button type="button" class="day-chip ${days.includes(i) ? "active" : ""}" data-day="${i}">${escape(d)}</button>
+                `).join("")}
+              </div>
+              <div class="field-hint">${escape(I18n.t("checklist_form.active_days_hint"))}</div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>${escape(I18n.t("checklist_form.target_time"))}</label>
+                <input type="time" id="cl-time" value="${escape(targetTime)}">
+                <div class="field-hint">${escape(I18n.t("checklist_form.target_time_hint"))}</div>
+              </div>
+              <div class="field">
+                <label>${escape(I18n.t("checklist_form.grace_minutes"))}</label>
+                <input type="number" id="cl-grace" min="0" max="1440" value="${existing?.grace_minutes ?? 0}">
+                <div class="field-hint">${escape(I18n.t("checklist_form.grace_hint"))}</div>
+              </div>
+            </div>
+
+            <div class="section-title">${escape(I18n.t("checklist_form.items"))}</div>
+            <div class="field-hint" style="margin-block-end: var(--space-3)">${escape(I18n.t("checklist_form.items_hint"))}</div>
+            <div class="items-list" id="cl-items"></div>
+            <button type="button" class="add-item-btn" id="cl-add-item">+ ${escape(I18n.t("checklist_form.add_item"))}</button>
+
+            <div class="section-title">${escape(I18n.t("checklist_form.assignees"))}</div>
+            <div class="field-hint" style="margin-block-end: var(--space-3)">${escape(I18n.t("checklist_form.assignees_hint"))}</div>
+            <div id="cl-assignees"><span class="loader-inline"></span></div>
+
+            ${isEdit ? `
+              <div class="section-title">${escape(I18n.t("checklist_form.status"))}</div>
+              <div class="toggle-row">
+                <div class="toggle-row-info">
+                  <div class="toggle-row-label">${escape(I18n.t("checklist_form.active_label"))}</div>
+                  <div class="toggle-row-hint">${escape(I18n.t("checklist_form.active_hint"))}</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="cl-active" ${existing.active ? "checked" : ""}>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            ` : ""}
+
+            <div id="cl-error" class="error-message" style="text-align:center" hidden></div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="cl-cancel">${escape(I18n.t("checklist_form.cancel"))}</button>
+              <button type="submit" class="btn btn-primary" id="cl-save">${escape(I18n.t("checklist_form.save"))}</button>
+            </div>
+          </form>
+        `;
+
+        // Day chips toggle
+        document.getElementById("cl-days").querySelectorAll(".day-chip").forEach(chip => {
+          chip.addEventListener("click", () => chip.classList.toggle("active"));
+        });
+
+        // Items management
+        const itemsEl = document.getElementById("cl-items");
+        function renumber() {
+          Array.from(itemsEl.querySelectorAll(".item-position")).forEach((el, idx) => {
+            el.textContent = `${idx + 1}.`;
+          });
+          if (itemsEl.children.length === 0) {
+            itemsEl.innerHTML = `<p class="field-hint" style="text-align:center; padding: var(--space-4)">${escape(I18n.t("checklist_form.no_items"))}</p>`;
+          }
+        }
+        function addItemRow(item) {
+          // remove empty-state placeholder if present
+          const placeholder = itemsEl.querySelector("p.field-hint");
+          if (placeholder) placeholder.remove();
+          const div = document.createElement("div");
+          div.className = "item-row";
+          div.innerHTML = `
+            <div class="item-row-header">
+              <span class="item-position">${itemsEl.children.length + 1}.</span>
+              <input type="text" class="item-label" placeholder="${escape(I18n.t("checklist_form.item_placeholder"))}" value="${escape(item?.label || "")}">
+              <button type="button" class="item-remove" title="${escape(I18n.t("checklist_form.remove"))}">\u00d7</button>
+            </div>
+            <div class="item-options">
+              <label class="item-toggle">
+                <input type="checkbox" class="item-photo" ${item?.requires_photo ? "checked" : ""}>
+                <span>${escape(I18n.t("checklist_form.requires_photo"))}</span>
+              </label>
+              <div class="photo-counts" ${item?.requires_photo ? "" : "hidden"}>
+                <span>${escape(I18n.t("checklist_form.min_max_photos"))}</span>
+                <input type="number" class="item-min-photos" min="0" max="20" value="${item?.min_photos ?? 1}">
+                <span>/</span>
+                <input type="number" class="item-max-photos" min="0" max="20" value="${item?.max_photos ?? 5}">
+              </div>
+              <label class="item-toggle">
+                <input type="checkbox" class="item-comment" ${item?.requires_comment ? "checked" : ""}>
+                <span>${escape(I18n.t("checklist_form.requires_comment"))}</span>
+              </label>
+            </div>
+          `;
+          div.querySelector(".item-remove").addEventListener("click", () => {
+            div.remove(); renumber();
+          });
+          const photoCb = div.querySelector(".item-photo");
+          const counts = div.querySelector(".photo-counts");
+          photoCb.addEventListener("change", () => { counts.hidden = !photoCb.checked; });
+          itemsEl.appendChild(div);
+          renumber();
+        }
+
+        // Populate items
+        if (existing && existing.items && existing.items.length > 0) {
+          existing.items.forEach(it => addItemRow({
+            label: localized(it.label),
+            requires_photo: it.requires_photo,
+            requires_comment: it.requires_comment,
+            min_photos: it.min_photos,
+            max_photos: it.max_photos
+          }));
+        } else {
+          renumber(); // shows empty state
+        }
+
+        document.getElementById("cl-add-item").addEventListener("click", () => addItemRow());
+
+        // Assignees (load all users)
+        let allUsers = [];
+        try { allUsers = await API.listUsers(); }
+        catch (e) {
+          document.getElementById("cl-assignees").innerHTML =
+            `<div class="error-message">${escape(e.message)}</div>`;
+          return;
+        }
+        const assigneesEl = document.getElementById("cl-assignees");
+        const assigneeSet = new Set(assigneeIds);
+        if (allUsers.length === 0) {
+          assigneesEl.innerHTML = `<div class="picker-empty">${escape(I18n.t("checklist_form.no_users"))}</div>`;
+        } else {
+          assigneesEl.innerHTML = `
+            <div class="picker-list">
+              ${allUsers.map(u => `
+                <label class="picker-item">
+                  <input type="checkbox" data-assignee-id="${u.id}" ${assigneeSet.has(u.id) ? "checked" : ""}>
+                  <div class="picker-item-text">
+                    <div class="picker-item-name">${escape(u.full_name)}</div>
+                    <div class="picker-item-meta">${escape(I18n.t("role." + u.role))}${u.department ? " \u00b7 " + escape(u.department) : ""}</div>
+                  </div>
+                </label>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        document.getElementById("cl-cancel").addEventListener("click", () => Router.go("checklists"));
+
+        document.getElementById("cl-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const errBox = document.getElementById("cl-error");
+          const saveBtn = document.getElementById("cl-save");
+          errBox.hidden = true;
+
+          const name = document.getElementById("cl-name").value.trim();
+          const description = document.getElementById("cl-desc").value.trim();
+          const activeDays = Array.from(document.querySelectorAll("#cl-days .day-chip.active"))
+            .map(c => parseInt(c.dataset.day));
+          const targetTime = document.getElementById("cl-time").value || null;
+          const graceMin = parseInt(document.getElementById("cl-grace").value) || 0;
+          const items = Array.from(itemsEl.querySelectorAll(".item-row")).map(row => ({
+            label: row.querySelector(".item-label").value.trim(),
+            requires_photo: row.querySelector(".item-photo").checked,
+            requires_comment: row.querySelector(".item-comment").checked,
+            min_photos: parseInt(row.querySelector(".item-min-photos").value) || 0,
+            max_photos: parseInt(row.querySelector(".item-max-photos").value) || 5
+          })).filter(it => it.label);
+          const assigneeSelected = Array.from(document.querySelectorAll("[data-assignee-id]:checked"))
+            .map(el => el.dataset.assigneeId);
+
+          // Validate
+          if (!name) {
+            errBox.textContent = I18n.t("checklist_form.needs_name");
+            errBox.hidden = false; return;
+          }
+          if (activeDays.length === 0) {
+            errBox.textContent = I18n.t("checklist_form.needs_days");
+            errBox.hidden = false; return;
+          }
+          if (items.length === 0) {
+            errBox.textContent = I18n.t("checklist_form.needs_items");
+            errBox.hidden = false; return;
+          }
+          if (assigneeSelected.length === 0) {
+            errBox.textContent = I18n.t("checklist_form.needs_assignees");
+            errBox.hidden = false; return;
+          }
+
+          saveBtn.disabled = true;
+          saveBtn.textContent = I18n.t("app.saving");
+          try {
+            const payload = {
+              name, description,
+              active_days: activeDays,
+              target_time: targetTime,
+              grace_minutes: graceMin,
+              active: isEdit ? document.getElementById("cl-active").checked : true,
+              items,
+              assignee_ids: assigneeSelected
+            };
+            await API.saveChecklist(payload, checklistId);
+            Router.go("checklists");
+          } catch (err) {
+            errBox.textContent = err.message || I18n.t("checklist_form.save_failed");
+            errBox.hidden = false;
+            saveBtn.disabled = false;
+            saveBtn.textContent = I18n.t("checklist_form.save");
           }
         });
       },

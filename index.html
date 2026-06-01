@@ -547,28 +547,6 @@
     }
 
     [dir="rtl"] .brand-mark { letter-spacing: 0; }
-
-    /* ---- Tasks + Questions ---- */
-    .task-filter-btn { background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); font-size:13px; font-weight:500; padding:var(--space-2) var(--space-3); color:var(--color-text-muted); cursor:pointer; transition:all 120ms var(--ease); }
-    .task-filter-btn:hover { border-color:var(--color-border-strong); color:var(--color-text); }
-    .task-filter-btn.active { background:var(--color-accent); border-color:var(--color-accent); color:#fff; }
-    .task-row { display:flex; align-items:center; gap:var(--space-3); background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius); padding:var(--space-3) var(--space-4); margin-block-end:var(--space-2); transition:border-color 150ms var(--ease); }
-    .task-row:hover { border-color:var(--color-border-strong); }
-    .task-row-done { opacity:0.6; }
-    .task-check-wrap { flex-shrink:0; position:relative; width:20px; height:20px; cursor:pointer; }
-    .task-check-wrap input { opacity:0; position:absolute; inset:0; cursor:pointer; }
-    .task-check-box { display:block; width:20px; height:20px; border:1.5px solid var(--color-border-strong); border-radius:5px; transition:background 150ms var(--ease), border-color 150ms var(--ease); }
-    .task-check-wrap input:checked ~ .task-check-box { background:var(--color-accent); border-color:var(--color-accent); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1,4.5 4.5,8 11,1'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center; background-size:10px; }
-    .task-delete { background:none; border:none; color:var(--color-text-faint); cursor:pointer; padding:var(--space-2); border-radius:var(--radius-sm); display:flex; align-items:center; transition:color 120ms, background 120ms; flex-shrink:0; }
-    .task-delete:hover { color:var(--color-danger); background:var(--color-danger-soft); }
-    .flag-btn { flex-shrink:0; background:var(--color-danger-soft); border:1px solid var(--color-danger); color:var(--color-danger); font-size:12px; font-weight:600; padding:var(--space-2) var(--space-3); border-radius:var(--radius-sm); cursor:pointer; transition:all 120ms var(--ease); white-space:nowrap; font-family:inherit; }
-    .flag-btn:hover:not(:disabled) { background:var(--color-danger); color:#fff; }
-    .flag-btn-disabled, .flag-btn:disabled { opacity:0.5; cursor:not-allowed; background:var(--color-bg); border-color:var(--color-border); color:var(--color-text-muted); }
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:flex-end; justify-content:center; z-index:200; }
-    @media (min-width:480px) { .modal-overlay { align-items:center; padding:var(--space-6); } }
-    .modal-sheet { background:var(--color-surface); border-radius:var(--radius-lg) var(--radius-lg) 0 0; width:100%; max-width:var(--max-content-width); padding:var(--space-6); display:flex; flex-direction:column; gap:var(--space-5); max-height:90vh; overflow-y:auto; }
-    @media (min-width:480px) { .modal-sheet { border-radius:var(--radius-lg); } }
-
   </style>
 </head>
 
@@ -645,8 +623,6 @@
           user_subtitle: "Complete your checklist for the current shift.",
           users: "Users", users_hint: "Create users, assign managers, set roles and departments.",
           checklists: "Checklists", checklists_hint: "Build and assign daily checklists to your team.",
-          tasks: "Tasks", tasks_hint: "Your personal to-do list for this shift.",
-          questions: "Questions", questions_hint: "Build question dropdowns and assign handlers.",
           audit_log: "Audit log", audit_hint: "Review admin actions and system changes.",
           no_checklists_yet: "No checklists assigned yet.",
           contact_manager: "Your manager will set them up shortly.",
@@ -672,7 +648,6 @@
           managers: "Reports to (managers)",
           managers_hint: "Pick the people this user reports to. Anyone above them in the tree will see this user\u2019s work.",
           managers_empty: "No other users yet.",
-          questions_access: "Questions access", questions_access_hint: "Allow access to Questions tab",
           status: "Status",
           active_label: "Active",
           active_hint: "Inactive users can\u2019t sign in.",
@@ -693,30 +668,6 @@
           no_days: "No days set",
           no_target: "No target time",
           days_short: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-        },
-        tasks: {
-          title: "Tasks", subtitle: "Your personal to-do list.",
-          placeholder: "What needs to be done?", empty: "No tasks yet. Add one above.",
-          filter_all: "All", filter_open: "Open", filter_done: "Done",
-          delete_confirm: "Delete this task?", auto_label: "Auto-assigned",
-          flag_modal_title: "Flag this item", flag_answer_label: "Select an answer",
-          flag_comment_label: "Comment", flag_comment_placeholder: "Describe the issue…",
-          flag_submit: "Submit & create task", flag_already_open: "A task is already open for this item.",
-          flag_submitting: "Submitting…", flag_no_question: "No question linked to this item.",
-          save_failed: "Could not save task."
-        },
-        questions: {
-          title: "Questions", subtitle: "Create questions with dropdown options and assign a handler.",
-          new_question: "New question", search_placeholder: "Search questions",
-          empty: "No questions yet. Create the first one.", empty_search: "No questions match.",
-          question_label: "Question", question_placeholder: "e.g. What is the issue type?",
-          options_label: "Answer options", options_hint: "One option per line. At least 2 required.",
-          assignee_label: "Assigned handler", assignee_hint: "This user receives a task when this question is triggered.",
-          no_assignee: "No users available.", save: "Save", cancel: "Cancel",
-          save_failed: "Could not save question.", needs_label: "Please enter a question.",
-          needs_options: "Add at least 2 answer options.", needs_assignee: "Select a handler.",
-          new_title: "New question", edit_title: "Edit question", options_count: "options",
-          access_label: "Allow access to Questions tab", access_hint: "This user can view, add and edit questions."
         },
         checklist_form: {
           new_title: "New checklist",
@@ -739,9 +690,6 @@
           item_placeholder: "e.g. Front door locked",
           requires_photo: "Photo required",
           requires_comment: "Comment required",
-          linked_question: "Linked question (flag trigger)",
-          linked_question_hint: "When flagged, user picks an answer and a task is auto-created.",
-          no_question: "None",
           min_max_photos: "Photos: min / max",
           remove: "Remove",
           assignees: "Assigned to",
@@ -930,14 +878,13 @@
       async function getCurrentProfile() {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
-        const { data: profile, error } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
-        if (error || !profile) { await sb.auth.signOut(); return null; }
-        if (!profile.full_name) profile.full_name = profile.name || profile.display_name || ((profile.first_name||"")+" "+(profile.last_name||"")).trim() || profile.email || "User";
-        profile.role = (profile.role || "user").toLowerCase();
-        const sv = String(profile.status || profile.active || "active").toLowerCase();
-        if (sv === "inactive" || sv === "false") { await sb.auth.signOut(); return null; }
-        profile.active = true;
-        profile.questions_access = profile.questions_access ?? false;
+        const { data: profile, error } = await sb.from("profiles")
+          .select("id, full_name, email, role, preferred_language, active")
+          .eq("id", session.user.id).single();
+        if (error || !profile || !profile.active) {
+          await sb.auth.signOut();
+          return null;
+        }
         return profile;
       }
       async function login(email, password) {
@@ -960,21 +907,20 @@
     // ========== API ==========
     const API = {
       async listUsers() {
-        const { data: raw, error } = await sb.from("profiles").select("*").order("full_name", { nullsFirst: false });
+        const { data: users, error } = await sb.from("profiles")
+          .select("id, full_name, email, role, department, job_title, phone, active")
+          .order("full_name");
         if (error) throw error;
-        const users = (raw||[]).map(u => {
-          if (!u.full_name) u.full_name = u.name||u.display_name||((u.first_name||"")+" "+(u.last_name||"")).trim()||u.email||"User";
-          u.role = (u.role||"user").toLowerCase();
-          const sv = String(u.status||u.active||"active").toLowerCase();
-          u.active = sv !== "inactive" && sv !== "false";
-          u.questions_access = u.questions_access ?? false;
-          return u;
-        });
-        const { data: links } = await sb.from("user_managers").select("user_id, manager_id");
+        const { data: links, error: lErr } = await sb.from("user_managers")
+          .select("user_id, manager_id");
+        if (lErr) throw lErr;
         const byUser = {};
-        for (const l of (links||[])) (byUser[l.user_id] ||= []).push(l.manager_id);
-        const usersById = Object.fromEntries(users.map(u=>[u.id,u]));
-        return users.map(u=>({...u,managers:(byUser[u.id]||[]).map(mid=>usersById[mid]).filter(Boolean)}));
+        for (const l of (links || [])) (byUser[l.user_id] ||= []).push(l.manager_id);
+        const usersById = Object.fromEntries(users.map(u => [u.id, u]));
+        return users.map(u => ({
+          ...u,
+          managers: (byUser[u.id] || []).map(mid => usersById[mid]).filter(Boolean)
+        }));
       },
       async createUser(payload) {
         const { data, error } = await sb.functions.invoke("create-user", { body: payload });
@@ -1014,7 +960,7 @@
           .eq("id", id).single();
         if (cErr) throw cErr;
         const { data: items, error: iErr } = await sb.from("checklist_items")
-          .select("id, position, label, requires_photo, requires_comment, min_photos, max_photos, question_id")
+          .select("id, position, label, requires_photo, requires_comment, min_photos, max_photos")
           .eq("checklist_id", id).order("position");
         if (iErr) throw iErr;
         const { data: assignees, error: aErr } = await sb.from("checklist_assignees")
@@ -1054,8 +1000,7 @@
             requires_photo: !!it.requires_photo,
             requires_comment: !!it.requires_comment,
             min_photos: it.requires_photo ? Math.max(0, parseInt(it.min_photos || 1)) : 0,
-            max_photos: it.requires_photo ? Math.max(parseInt(it.min_photos || 1), parseInt(it.max_photos || 5)) : 0,
-            question_id: it.question_id || null
+            max_photos: it.requires_photo ? Math.max(parseInt(it.min_photos || 1), parseInt(it.max_photos || 5)) : 0
           }));
           const { error: insIErr } = await sb.from("checklist_items").insert(rows);
           if (insIErr) throw insIErr;
@@ -1077,64 +1022,6 @@
       async deleteChecklist(id) {
         const { error } = await sb.from("checklists").delete().eq("id", id);
         if (error) throw error;
-      },
-      async listQuestions() {
-        const { data, error } = await sb.from("questions").select("id, label, options, assignee_id, created_at").order("created_at", { ascending: false });
-        if (error) return [];
-        return data || [];
-      },
-      async getQuestion(id) {
-        const { data, error } = await sb.from("questions").select("id, label, options, assignee_id").eq("id", id).single();
-        if (error) throw error;
-        return data;
-      },
-      async saveQuestion(payload, existingId) {
-        const { data: { user } } = await sb.auth.getUser();
-        if (existingId) {
-          const { error } = await sb.from("questions").update({ label: payload.label, options: payload.options, assignee_id: payload.assignee_id }).eq("id", existingId);
-          if (error) throw error;
-        } else {
-          const { error } = await sb.from("questions").insert({ label: payload.label, options: payload.options, assignee_id: payload.assignee_id, created_by: user.id });
-          if (error) throw error;
-        }
-      },
-      async listTasks() {
-        const { data: { user } } = await sb.auth.getUser();
-        let data, error;
-        ({ data, error } = await sb.from("tasks").select("id, title, done, source, created_at").eq("user_id", user.id).order("created_at", { ascending: false }));
-        if (error) ({ data, error } = await sb.from("tasks").select("id, title, done, created_at").eq("user_id", user.id).order("created_at", { ascending: false }));
-        if (error) throw error;
-        return (data || []).map(t => ({ ...t, source: t.source ?? "manual" }));
-      },
-      async createTask(title) {
-        const { data: { user } } = await sb.auth.getUser();
-        const { data, error } = await sb.from("tasks").insert({ title, user_id: user.id, done: false, source: "manual" }).select("id, title, done, created_at").single();
-        if (error) throw error;
-        return { ...data, source: "manual" };
-      },
-      async toggleTask(id, done) { const { error } = await sb.from("tasks").update({ done }).eq("id", id); if (error) throw error; },
-      async deleteTask(id) { const { error } = await sb.from("tasks").delete().eq("id", id); if (error) throw error; },
-      async countOpenTasks() {
-        const { data: { user } } = await sb.auth.getUser();
-        const { count } = await sb.from("tasks").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("done", false);
-        return count || 0;
-      },
-      async hasPendingFlagTask(checklistItemId) {
-        const { data, error } = await sb.from("tasks").select("id").eq("checklist_item_id", checklistItemId).eq("done", false).limit(1);
-        if (error) return false;
-        return (data || []).length > 0;
-      },
-      async createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel, answer, comment, assigneeId }) {
-        const { data: { user } } = await sb.auth.getUser();
-        const title = checklistName + " › " + itemLabel + " › " + questionLabel + " › " + comment;
-        const { error } = await sb.from("tasks").insert({ title, user_id: assigneeId, flagged_by: user.id, done: false, source: "auto", checklist_item_id: checklistItemId, question_answer: answer, flag_comment: comment });
-        if (error) throw error;
-      },
-      async getChecklistWithItems(id) {
-        const result = await this.getChecklist(id);
-        const { data: items } = await sb.from("checklist_items").select("id, position, label, requires_photo, requires_comment, min_photos, max_photos, question_id").eq("checklist_id", id).order("position");
-        if (items) result.items = items;
-        return result;
       }
     };
 
@@ -1183,78 +1070,17 @@
         } else if (route === "audit") {
           setHeader(I18n.t("home.audit_log"), true);
           Views.auditStub();
-        } else if (route === "tasks") {
-          setHeader(I18n.t("tasks.title"), true);
-          Views.tasksList();
-        } else if (route === "questions") {
-          setHeader(I18n.t("questions.title"), true);
-          Views.questionsList();
-        } else if (route === "question-form") {
-          setHeader(data?.id ? I18n.t("questions.edit_title") : I18n.t("questions.new_title"), true);
-          Views.questionForm(data?.id || null);
-        } else if (route === "checklist-do") {
-          setHeader(I18n.t("checklists.title"), true);
-          Views.checklistDo(data?.id || null);
         }
       }
       function back() {
         if (!last) return go("home");
         if (last.route === "user-form") return go("users");
         if (last.route === "checklist-form") return go("checklists");
-        if (last.route === "question-form") return go("questions");
-        if (last.route === "checklist-do") return go("checklists");
         return go("home");
       }
       function rerender() { if (last) go(last.route, last.data); }
       return { go, back, rerender };
     })();
-
-    // ========== FLAG MODAL ==========
-    const FlagModal = {
-      async show({ checklistItemId, checklistName, itemLabel, questionId, onSuccess }) {
-        const hasPending = await API.hasPendingFlagTask(checklistItemId);
-        if (hasPending) { alert(I18n.t("tasks.flag_already_open")); return; }
-        if (!questionId) { alert(I18n.t("tasks.flag_no_question")); return; }
-        let question;
-        try { question = await API.getQuestion(questionId); } catch(e) { alert(e.message); return; }
-        const overlay = document.createElement("div");
-        overlay.className = "modal-overlay";
-        overlay.innerHTML = `<div style="position:relative;width:100%;max-width:var(--max-content-width)"><div class="modal-sheet">
-          <button id="flag-close" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-muted)">&times;</button>
-          <h2 style="font-family:var(--font-display);font-size:20px;font-weight:400;margin:0">${escape(I18n.t("tasks.flag_modal_title"))}</h2>
-          <p style="margin:0;color:var(--color-text-muted);font-size:14px">${escape(itemLabel)}</p>
-          <div class="field"><label>${escape(question.label)}</label>
-            <select id="flag-answer"><option value="">&mdash; ${escape(I18n.t("tasks.flag_answer_label"))} &mdash;</option>
-              ${(question.options||[]).map(o=>`<option value="${escape(o)}">${escape(o)}</option>`).join("")}
-            </select></div>
-          <div class="field"><label>${escape(I18n.t("tasks.flag_comment_label"))}</label>
-            <textarea id="flag-comment" rows="3" placeholder="${escape(I18n.t("tasks.flag_comment_placeholder"))}" style="resize:vertical"></textarea></div>
-          <div id="flag-error" class="error-message" hidden></div>
-          <button class="btn btn-primary" id="flag-submit" style="width:100%">${escape(I18n.t("tasks.flag_submit"))}</button>
-        </div></div>`;
-        document.body.appendChild(overlay);
-        const close = () => overlay.remove();
-        overlay.querySelector("#flag-close").addEventListener("click", close);
-        overlay.addEventListener("click", e => { if (e.target===overlay) close(); });
-        overlay.querySelector("#flag-submit").addEventListener("click", async () => {
-          const answer=overlay.querySelector("#flag-answer").value;
-          const comment=overlay.querySelector("#flag-comment").value.trim();
-          const errEl=overlay.querySelector("#flag-error");
-          const btn=overlay.querySelector("#flag-submit");
-          errEl.hidden=true;
-          if (!answer) { errEl.textContent=I18n.t("tasks.flag_answer_label")+" — required"; errEl.hidden=false; return; }
-          if (!comment) { errEl.textContent=I18n.t("tasks.flag_comment_label")+" — required"; errEl.hidden=false; return; }
-          btn.disabled=true; btn.textContent=I18n.t("tasks.flag_submitting");
-          try {
-            await API.createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel: question.label, answer, comment, assigneeId: question.assignee_id });
-            close(); if (onSuccess) onSuccess();
-          } catch(e) {
-            errEl.textContent=e.message||I18n.t("tasks.save_failed"); errEl.hidden=false;
-            btn.disabled=false; btn.textContent=I18n.t("tasks.flag_submit");
-          }
-        });
-      }
-    };
 
     // ========== VIEWS ==========
     const Views = {
@@ -1262,34 +1088,44 @@
         const main = document.getElementById("app-main");
         const profile = App.state.profile;
         const name = escape(profile.full_name.split(" ")[0]);
-        const _qCard = profile.questions_access ? `<button class="card card-clickable" data-nav="questions"><h3>${I18n.t("home.questions")}</h3><p>${I18n.t("home.questions_hint")}</p></button>` : "";
-        const _tCard = `<button class="card card-clickable" data-nav="tasks"><h3>${I18n.t("home.tasks")} <span id="home-task-badge" hidden style="display:inline-flex;align-items:center;justify-content:center;background:var(--color-danger);color:#fff;font-size:11px;font-weight:600;min-width:18px;height:18px;border-radius:9px;padding-inline:4px;margin-inline-start:6px;vertical-align:middle"></span></h3><p>${I18n.t("home.tasks_hint")}</p></button>`;
         if (profile.role === "admin") {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.admin_subtitle")}</p>
-            <button class="card card-clickable" data-nav="users"><h3>${I18n.t("home.users")}</h3><p>${I18n.t("home.users_hint")}</p></button>
-            <button class="card card-clickable" data-nav="checklists"><h3>${I18n.t("home.checklists")}</h3><p>${I18n.t("home.checklists_hint")}</p></button>
-            <button class="card card-clickable" data-nav="questions"><h3>${I18n.t("home.questions")}</h3><p>${I18n.t("home.questions_hint")}</p></button>
-            ${_tCard}
-            <button class="card card-clickable" data-nav="audit"><h3>${I18n.t("home.audit_log")}</h3><p>${I18n.t("home.audit_hint")}</p></button>
+            <button class="card card-clickable" data-nav="users">
+              <h3>${I18n.t("home.users")}</h3>
+              <p>${I18n.t("home.users_hint")}</p>
+            </button>
+            <button class="card card-clickable" data-nav="checklists">
+              <h3>${I18n.t("home.checklists")}</h3>
+              <p>${I18n.t("home.checklists_hint")}</p>
+            </button>
+            <button class="card card-clickable" data-nav="audit">
+              <h3>${I18n.t("home.audit_log")}</h3>
+              <p>${I18n.t("home.audit_hint")}</p>
+            </button>
           `;
+          main.querySelectorAll("[data-nav]").forEach(el =>
+            el.addEventListener("click", () => Router.go(el.dataset.nav)));
         } else if (profile.role === "manager") {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.manager_subtitle")}</p>
-            <button class="card card-clickable" data-nav="checklists"><h3>${I18n.t("home.checklists")}</h3><p>${I18n.t("home.checklists_hint")}</p></button>
-            ${_qCard}${_tCard}
+            <div class="empty-state">
+              <p>${I18n.t("home.no_data_yet")}</p>
+              <p>${I18n.t("home.contact_admin")}</p>
+            </div>
           `;
         } else {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.user_subtitle")}</p>
-            ${_qCard}${_tCard}
+            <div class="empty-state">
+              <p>${I18n.t("home.no_checklists_yet")}</p>
+              <p>${I18n.t("home.contact_manager")}</p>
+            </div>
           `;
         }
-        main.querySelectorAll("[data-nav]").forEach(el => el.addEventListener("click", () => Router.go(el.dataset.nav)));
-        API.countOpenTasks().then(n => { const b=document.getElementById("home-task-badge"); if(b&&n>0){b.textContent=n;b.hidden=false;} }).catch(()=>{});
       },
 
       async usersList() {
@@ -1403,10 +1239,17 @@
             <div id="manager-picker"><span class="loader-inline"></span></div>
 
             ${isEdit ? `
-              <div class="section-title">Questions Access</div>
-              <div class="toggle-row"><div class="toggle-row-info"><div class="toggle-row-label">${escape(I18n.t("questions.access_label"))}</div><div class="toggle-row-hint">${escape(I18n.t("questions.access_hint"))}</div></div><label class="switch"><input type="checkbox" id="f-questions-access" ${user.questions_access?"checked":""}><span class="slider"></span></label></div>
               <div class="section-title">${escape(I18n.t("user_form.status"))}</div>
-              <div class="toggle-row"><div class="toggle-row-info"><div class="toggle-row-label">${escape(I18n.t("user_form.active_label"))}</div><div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div></div><label class="switch"><input type="checkbox" id="f-active" ${(String(user.status||user.active||"active").toLowerCase()!=="inactive")?"checked":""}><span class="slider"></span></label></div>
+              <div class="toggle-row">
+                <div class="toggle-row-info">
+                  <div class="toggle-row-label">${escape(I18n.t("user_form.active_label"))}</div>
+                  <div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="f-active" ${user.active ? "checked" : ""}>
+                  <span class="slider"></span>
+                </label>
+              </div>
             ` : ""}
 
             <div id="form-error" class="error-message" style="text-align:center" hidden></div>
@@ -1464,11 +1307,9 @@
               .map(el => el.dataset.mgrId);
             if (isEdit) {
               const activeEl = document.getElementById("f-active");
-              const qaEl = document.getElementById("f-questions-access");
               await API.updateUser(user.id, {
                 ...formData,
-                status: (activeEl && !activeEl.checked) ? "Inactive" : "Active",
-                questions_access: qaEl ? qaEl.checked : false
+                active: activeEl ? activeEl.checked : true
               }, managerIds);
             } else {
               const password = document.getElementById("f-password").value;
@@ -1546,10 +1387,7 @@
             </div>
           `).join("");
           listEl.querySelectorAll(".checklist-card").forEach(el =>
-            el.addEventListener("click", () => {
-              const p = App.state.profile;
-              Router.go((p.role==="admin"||p.questions_access) ? "checklist-form" : "checklist-do", { id: el.dataset.id });
-            }));
+            el.addEventListener("click", () => Router.go("checklist-form", { id: el.dataset.id })));
         }
         searchEl.addEventListener("input", render);
         render();
@@ -1655,10 +1493,6 @@
           chip.addEventListener("click", () => chip.classList.toggle("active"));
         });
 
-        // Load questions for linking
-        let allQuestions = [];
-        try { allQuestions = await API.listQuestions(); } catch(e) {}
-
         // Items management
         const itemsEl = document.getElementById("cl-items");
         function renumber() {
@@ -1696,13 +1530,6 @@
                 <input type="checkbox" class="item-comment" ${item?.requires_comment ? "checked" : ""}>
                 <span>${escape(I18n.t("checklist_form.requires_comment"))}</span>
               </label>
-              <div style="margin-top:4px">
-                <div style="font-size:12px;font-weight:500;color:var(--color-text-muted);margin-bottom:4px">${escape(I18n.t("checklist_form.linked_question"))}</div>
-                <select class="item-question-select" style="width:100%;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);font-size:13px;appearance:none;font-family:inherit">
-                  <option value="">${escape(I18n.t("checklist_form.no_question"))}</option>
-                  ${allQuestions.map(q=>`<option value="${q.id}" ${item?.question_id===q.id?"selected":""}>${escape(q.label)}</option>`).join("")}
-                </select>
-              </div>
             </div>
           `;
           div.querySelector(".item-remove").addEventListener("click", () => {
@@ -1722,8 +1549,7 @@
             requires_photo: it.requires_photo,
             requires_comment: it.requires_comment,
             min_photos: it.min_photos,
-            max_photos: it.max_photos,
-            question_id: it.question_id || ""
+            max_photos: it.max_photos
           }));
         } else {
           renumber(); // shows empty state
@@ -1778,8 +1604,7 @@
             requires_photo: row.querySelector(".item-photo").checked,
             requires_comment: row.querySelector(".item-comment").checked,
             min_photos: parseInt(row.querySelector(".item-min-photos").value) || 0,
-            max_photos: parseInt(row.querySelector(".item-max-photos").value) || 5,
-            question_id: row.querySelector(".item-question-select")?.value || null
+            max_photos: parseInt(row.querySelector(".item-max-photos").value) || 5
           })).filter(it => it.label);
           const assigneeSelected = Array.from(document.querySelectorAll("[data-assignee-id]:checked"))
             .map(el => el.dataset.assigneeId);
@@ -1822,161 +1647,6 @@
             saveBtn.disabled = false;
             saveBtn.textContent = I18n.t("checklist_form.save");
           }
-        });
-      },
-
-      async tasksList() {
-        const main=document.getElementById("app-main");
-        main.innerHTML=`<h1 class="page-title">${I18n.t("tasks.title")}</h1><p class="page-subtitle">${I18n.t("tasks.subtitle")}</p>
-          <div style="display:flex;gap:8px;margin-block-end:16px"><input type="text" id="task-input" style="flex:1;min-width:0;padding:12px 16px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface);font-size:15px;font-family:inherit" placeholder="${escape(I18n.t("tasks.placeholder"))}" maxlength="200" autocomplete="off">
-          <button id="task-add-btn" class="btn btn-primary" style="flex-shrink:0;font-size:22px;padding-inline:20px">+</button></div>
-          <div id="task-error" class="error-message" hidden style="margin-block-end:16px"></div>
-          <div style="display:flex;gap:8px;margin-block-end:16px" id="task-filters">
-            <button class="task-filter-btn active" data-filter="all">${I18n.t("tasks.filter_all")}</button>
-            <button class="task-filter-btn" data-filter="open">${I18n.t("tasks.filter_open")}</button>
-            <button class="task-filter-btn" data-filter="done">${I18n.t("tasks.filter_done")}</button>
-          </div>
-          <div id="tasks-list"><span class="loader-inline"></span></div>`;
-        let tasks=[], filter="all";
-        const listEl=document.getElementById("tasks-list"),errEl=document.getElementById("task-error"),
-              inputEl=document.getElementById("task-input"),addBtn=document.getElementById("task-add-btn");
-        function render() {
-          const vis=tasks.filter(t=>filter==="all"?true:filter==="done"?t.done:!t.done);
-          if (!vis.length){listEl.innerHTML=`<div class="empty-state"><p>${escape(I18n.t("tasks.empty"))}</p></div>`;return;}
-          listEl.innerHTML=vis.map(t=>`<div class="task-row ${t.done?"task-row-done":""}" data-id="${t.id}">
-            <label class="task-check-wrap"><input type="checkbox" class="task-check" ${t.done?"checked":""}><span class="task-check-box"></span></label>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:15px;word-break:break-word${t.done?";text-decoration:line-through;color:var(--color-text-muted)":""}">${escape(t.title)}</div>
-              ${t.source==="auto"?`<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-warning-text);background:var(--color-warning-soft);padding:1px 6px;border-radius:4px">Auto-assigned</span>`:""}
-            </div>
-            <button class="task-delete" title="${escape(I18n.t("tasks.delete_confirm"))}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></button>
-          </div>`).join("");
-          listEl.querySelectorAll(".task-check").forEach(cb=>{
-            cb.addEventListener("change",async()=>{
-              const t=tasks.find(x=>x.id===cb.closest(".task-row").dataset.id);if(!t)return;
-              t.done=cb.checked;cb.closest(".task-row").classList.toggle("task-row-done",t.done);
-              try{await API.toggleTask(t.id,t.done);}catch(e){t.done=!t.done;render();}
-            });
-          });
-          listEl.querySelectorAll(".task-delete").forEach(btn=>{
-            btn.addEventListener("click",async()=>{
-              if(!confirm(I18n.t("tasks.delete_confirm")))return;
-              const id=btn.closest(".task-row").dataset.id;btn.closest(".task-row").style.opacity="0.4";
-              try{await API.deleteTask(id);tasks=tasks.filter(t=>t.id!==id);render();}
-              catch(e){btn.closest(".task-row").style.opacity="";errEl.textContent=e.message;errEl.hidden=false;}
-            });
-          });
-        }
-        try{tasks=await API.listTasks();}catch(e){listEl.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
-        render();
-        document.getElementById("task-filters").querySelectorAll(".task-filter-btn").forEach(btn=>{
-          btn.addEventListener("click",()=>{filter=btn.dataset.filter;document.querySelectorAll(".task-filter-btn").forEach(b=>b.classList.toggle("active",b===btn));render();});
-        });
-        async function addTask(){
-          const title=inputEl.value.trim();if(!title)return;
-          errEl.hidden=true;addBtn.disabled=true;
-          try{const t=await API.createTask(title);tasks.unshift(t);inputEl.value="";render();}
-          catch(e){errEl.textContent=I18n.t("tasks.save_failed");errEl.hidden=false;}
-          finally{addBtn.disabled=false;inputEl.focus();}
-        }
-        addBtn.addEventListener("click",addTask);
-        inputEl.addEventListener("keydown",e=>{if(e.key==="Enter")addTask();});
-      },
-
-      async questionsList() {
-        const main=document.getElementById("app-main");
-        main.innerHTML=`<h1 class="page-title">${I18n.t("questions.title")}</h1><p class="page-subtitle">${I18n.t("questions.subtitle")}</p>
-          <div class="toolbar"><input type="text" class="search-input" id="q-search" placeholder="${escape(I18n.t("questions.search_placeholder"))}">
-          <button class="btn btn-primary" id="new-q-btn">+ ${escape(I18n.t("questions.new_question"))}</button></div>
-          <div id="q-list"><span class="loader-inline"></span></div>`;
-        document.getElementById("new-q-btn").addEventListener("click",()=>Router.go("question-form",{id:null}));
-        let questions=[],allUsers=[];
-        try{questions=await API.listQuestions();}catch(e){document.getElementById("q-list").innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
-        try{allUsers=await API.listUsers();}catch(e){}
-        const usersById=Object.fromEntries(allUsers.map(u=>[u.id,u]));
-        const listEl=document.getElementById("q-list"),searchEl=document.getElementById("q-search");
-        function render(){
-          const q=searchEl.value.trim().toLowerCase();
-          const filtered=!q?questions:questions.filter(qn=>qn.label.toLowerCase().includes(q));
-          if(!filtered.length){listEl.innerHTML=`<div class="empty-state"><p>${escape(q?I18n.t("questions.empty_search"):I18n.t("questions.empty"))}</p></div>`;return;}
-          listEl.innerHTML=filtered.map(qn=>{const h=usersById[qn.assignee_id];
-            return `<div class="checklist-card" data-id="${qn.id}" style="cursor:pointer">
-              <div class="checklist-card-top"><span class="checklist-card-name">${escape(qn.label)}</span></div>
-              <div class="checklist-card-meta"><span>${(qn.options||[]).length} ${escape(I18n.t("questions.options_count"))}</span>${h?`<span>→ ${escape(h.full_name)}</span>`:""}</div>
-            </div>`;}).join("");
-          listEl.querySelectorAll(".checklist-card").forEach(el=>el.addEventListener("click",()=>Router.go("question-form",{id:el.dataset.id})));
-        }
-        searchEl.addEventListener("input",render);render();
-      },
-
-      async questionForm(questionId) {
-        const isEdit=!!questionId,main=document.getElementById("app-main");
-        let existing=null;
-        if(isEdit){try{existing=await API.getQuestion(questionId);}catch(e){main.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}}
-        let allUsers=[];try{allUsers=await API.listUsers();}catch(e){}
-        main.innerHTML=`<h1 class="page-title">${isEdit?I18n.t("questions.edit_title"):I18n.t("questions.new_title")}</h1>
-          <form id="q-form" class="form" novalidate>
-            <div class="field"><label>${escape(I18n.t("questions.question_label"))}</label>
-              <input type="text" id="q-label" required placeholder="${escape(I18n.t("questions.question_placeholder"))}" value="${escape(existing?.label||"")}"></div>
-            <div class="field"><label>${escape(I18n.t("questions.options_label"))}</label>
-              <textarea id="q-options" rows="5" placeholder="Option A, Option B, Option C" style="resize:vertical">${escape((existing?.options||[]).join("\n"))}</textarea>
-              <div class="field-hint">${escape(I18n.t("questions.options_hint"))}</div></div>
-            <div class="field"><label>${escape(I18n.t("questions.assignee_label"))}</label>
-              <div class="field-hint" style="margin-block-end:8px">${escape(I18n.t("questions.assignee_hint"))}</div>
-              ${!allUsers.length?`<div class="picker-empty">${escape(I18n.t("questions.no_assignee"))}</div>`:`<div class="picker-list">${allUsers.map(u=>`<label class="picker-item"><input type="radio" name="q-assignee" value="${u.id}" ${existing?.assignee_id===u.id?"checked":""}><div class="picker-item-text"><div class="picker-item-name">${escape(u.full_name)}</div><div class="picker-item-meta">${escape(I18n.t("role."+u.role))}${u.department?" · "+escape(u.department):""}</div></div></label>`).join("")}</div>`}
-            </div>
-            <div id="q-error" class="error-message" hidden></div>
-            <div class="form-actions">
-              <button type="button" class="btn btn-secondary" id="q-cancel">${escape(I18n.t("questions.cancel"))}</button>
-              <button type="submit" class="btn btn-primary" id="q-save">${escape(I18n.t("questions.save"))}</button>
-            </div></form>`;
-        document.getElementById("q-cancel").addEventListener("click",()=>Router.go("questions"));
-        document.getElementById("q-form").addEventListener("submit",async(e)=>{
-          e.preventDefault();
-          const errBox=document.getElementById("q-error"),saveBtn=document.getElementById("q-save");
-          errBox.hidden=true;
-          const label=document.getElementById("q-label").value.trim();
-          const options=document.getElementById("q-options").value.split("\n").map(s=>s.trim()).filter(Boolean);
-          const assigneeId=document.querySelector("[name='q-assignee']:checked")?.value||null;
-          if(!label){errBox.textContent=I18n.t("questions.needs_label");errBox.hidden=false;return;}
-          if(options.length<2){errBox.textContent=I18n.t("questions.needs_options");errBox.hidden=false;return;}
-          if(!assigneeId){errBox.textContent=I18n.t("questions.needs_assignee");errBox.hidden=false;return;}
-          saveBtn.disabled=true;saveBtn.textContent=I18n.t("app.saving");
-          try{await API.saveQuestion({label,options,assignee_id:assigneeId},questionId);Router.go("questions");}
-          catch(err){errBox.textContent=err.message||I18n.t("questions.save_failed");errBox.hidden=false;saveBtn.disabled=false;saveBtn.textContent=I18n.t("questions.save");}
-        });
-      },
-
-      async checklistDo(checklistId) {
-        const main=document.getElementById("app-main");
-        main.innerHTML=`<div style="text-align:center;padding:48px"><span class="loader-inline"></span></div>`;
-        let result;
-        try{result=await API.getChecklistWithItems(checklistId);}
-        catch(e){main.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
-        const {checklist,items}=result;
-        const loc=j=>typeof j==="string"?j:(j?.en||Object.values(j||{})[0]||"");
-        const name=loc(checklist.name);
-        const pendingChecks=await Promise.all(items.map(it=>it.question_id?API.hasPendingFlagTask(it.id):Promise.resolve(false)));
-        main.innerHTML=`<h1 class="page-title">${escape(name)}</h1><p class="page-subtitle">${escape(loc(checklist.description||""))}</p><div id="do-items"></div>`;
-        const doEl=document.getElementById("do-items");
-        doEl.innerHTML=items.map((it,idx)=>{
-          const hp=pendingChecks[idx];
-          return `<div class="task-row" data-item-id="${it.id}" data-question-id="${it.question_id||""}" data-checklist-name="${escape(name)}" data-item-label="${escape(loc(it.label))}">
-            <div style="flex:1;font-size:15px">${idx+1}. ${escape(loc(it.label))}</div>
-            ${it.question_id?`<button class="flag-btn${hp?" flag-btn-disabled":""}" ${hp?`disabled title="${escape(I18n.t("tasks.flag_already_open"))}"`:""}>
-              &#128681; ${hp?escape(I18n.t("tasks.flag_already_open")):"Flag"}
-            </button>`:""}
-          </div>`;
-        }).join("")||`<div class="empty-state"><p>No items.</p></div>`;
-        doEl.querySelectorAll(".flag-btn:not([disabled])").forEach(btn=>{
-          btn.addEventListener("click",async()=>{
-            const row=btn.closest(".task-row");
-            await FlagModal.show({
-              checklistItemId:row.dataset.itemId,checklistName:row.dataset.checklistName,
-              itemLabel:row.dataset.itemLabel,questionId:row.dataset.questionId,
-              onSuccess:()=>{btn.disabled=true;btn.classList.add("flag-btn-disabled");btn.innerHTML="&#128681; "+I18n.t("tasks.flag_already_open");}
-            });
-          });
         });
       },
 

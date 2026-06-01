@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#FBFAF7">
-  <title>Shiftly</title>
+  <title>Shiftly v3</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,6 +162,13 @@
       font-weight: 500;
     }
     .back-btn:hover { background: var(--color-bg); }
+
+    .debug-bar {
+      background: #1C1C1A; color: #9aff9a;
+      font-size: 11px; font-family: monospace;
+      padding: 4px 12px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
 
     .error-message {
       background: var(--color-danger-soft);
@@ -754,6 +761,12 @@
   </main>
 
   <div class="app-shell" id="app-view" hidden>
+    <div class="debug-bar" id="debug-bar" hidden>
+      <span>🛠 DEBUG</span>
+      <span id="dbg-role"></span>
+      <span id="dbg-qa"></span>
+      <span id="dbg-file">file: shiftly-v3.html</span>
+    </div>
     <header class="app-header">
       <div class="header-left">
         <button type="button" id="back-btn" class="back-btn" hidden>
@@ -968,16 +981,19 @@
           .select("id, full_name, email, role, active, questions_access")
           .eq("id", session.user.id).single());
         if (error) {
+          console.warn("Profile fetch (with questions_access) failed:", error.message);
           // Fallback: column may not exist yet — try without it
           ({ data: profile, error } = await sb.from("profiles")
             .select("id, full_name, email, role, active")
             .eq("id", session.user.id).single());
         }
         if (error || !profile || !profile.active) {
+          console.warn("Profile load failed or inactive:", error?.message, profile);
           await sb.auth.signOut();
           return null;
         }
         profile.questions_access = profile.questions_access ?? false;
+        console.log("Profile loaded:", profile.role, "questions_access:", profile.questions_access);
         return profile;
       }
       async function login(email, password) {
@@ -1391,6 +1407,15 @@
         const main = document.getElementById("app-main");
         const profile = App.state.profile;
         const name = escape(profile.full_name.split(" ")[0]);
+
+        // Debug bar — shows live profile state
+        const dbg = document.getElementById("debug-bar");
+        if (dbg) {
+          dbg.hidden = false;
+          document.getElementById("dbg-role").textContent = "role: " + profile.role;
+          document.getElementById("dbg-qa").textContent = "questions_access: " + profile.questions_access;
+        }
+
         if (profile.role === "admin") {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>

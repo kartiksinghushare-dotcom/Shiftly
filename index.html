@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Plus+Jakarta+Sans:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -27,8 +27,8 @@
       --color-warning-soft: #FBF0DD;
       --color-warning-text: #8A6620;
 
-      --font-display: "Fraunces", Georgia, serif;
-      --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: "Fraunces", "Noto Naskh Arabic", Georgia, serif;
+      --font-body: "Plus Jakarta Sans", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, sans-serif;
 
       --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
       --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
@@ -162,13 +162,21 @@
       font-weight: 500;
     }
     .back-btn:hover { background: var(--color-bg); }
+    [dir="rtl"] .back-btn .back-arrow { transform: scaleX(-1); }
 
-    .debug-bar {
-      background: #1C1C1A; color: #9aff9a;
-      font-size: 11px; font-family: monospace;
-      padding: 4px 12px;
-      display: flex; gap: 16px; flex-wrap: wrap;
+    .lang-toggle {
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--space-2); font-size: 13px; color: var(--color-text-muted);
     }
+    .lang-btn {
+      background: none; border: none; color: inherit;
+      font-size: inherit; font-family: inherit;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-sm);
+    }
+    .lang-btn.active { color: var(--color-accent); font-weight: 500; }
+    .lang-btn:hover { color: var(--color-text); }
+    .lang-sep { color: var(--color-text-faint); }
 
     .error-message {
       background: var(--color-danger-soft);
@@ -249,7 +257,7 @@
       align-items: center; flex-wrap: wrap;
     }
     .toolbar .search-input {
-      flex: 1; min-width: 160px;
+      flex: 1; min-width: 0;
       padding: var(--space-3) var(--space-4);
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
@@ -355,6 +363,7 @@
     }
     .switch input:checked + .slider { background: var(--color-accent); }
     .switch input:checked + .slider::before { transform: translateX(18px); }
+    [dir="rtl"] .switch input:checked + .slider::before { transform: translateX(-18px); }
 
     .form-actions { display: flex; gap: var(--space-3); margin-block-start: var(--space-8); }
     .form-actions .btn { flex: 1; }
@@ -537,201 +546,28 @@
       color: var(--color-text-muted);
     }
 
-    /* ---- Question cards ---- */
-    .question-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: var(--space-4) var(--space-5);
-      margin-block-end: var(--space-3);
-      cursor: pointer;
-      transition: border-color 150ms var(--ease);
-      display: flex; flex-direction: column; gap: var(--space-1);
-    }
-    .question-card:hover { border-color: var(--color-border-strong); }
-    .question-card-top { display: flex; align-items: center; justify-content: space-between; }
-    .question-card-label { font-weight: 500; font-size: 16px; }
-    .question-card-meta { font-size: 13px; color: var(--color-text-muted); display: flex; gap: var(--space-4); }
+    [dir="rtl"] .brand-mark { letter-spacing: 0; }
 
-    /* ---- Item question select ---- */
-    .item-question-wrap { display: flex; flex-direction: column; gap: var(--space-1); }
-    .item-question-label { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
-    .item-question-select {
-      appearance: none; font-size: 14px;
-      padding: var(--space-2) var(--space-3);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: var(--color-bg); color: var(--color-text);
-      width: 100%; max-width: 100%;
-    }
-    .item-question-select:focus {
-      outline: none; border-color: var(--color-accent);
-      box-shadow: 0 0 0 3px var(--color-accent-soft);
-    }
-
-    /* ---- Task body + source badge ---- */
-    .task-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-    .task-source-badge {
-      font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      color: var(--color-warning-text);
-      background: var(--color-warning-soft);
-      padding: 1px var(--space-2);
-      border-radius: var(--radius-sm);
-      align-self: flex-start;
-    }
-    .task-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      background: var(--color-danger); color: #fff;
-      font-size: 11px; font-weight: 600;
-      min-width: 18px; height: 18px;
-      border-radius: 9px;
-      padding-inline: 4px;
-      margin-inline-start: var(--space-2);
-      vertical-align: middle;
-    }
-
-    /* ---- Flag modal ---- */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: flex; align-items: flex-end; justify-content: center;
-      z-index: 200;
-      padding-block-end: 0;
-    }
-    @media (min-width: 480px) {
-      .modal-overlay { align-items: center; padding: var(--space-6); }
-    }
-    .modal-sheet {
-      background: var(--color-surface);
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      width: 100%; max-width: var(--max-content-width);
-      padding: var(--space-6);
-      display: flex; flex-direction: column; gap: var(--space-5);
-      max-height: 90vh; overflow-y: auto;
-    }
-    @media (min-width: 480px) {
-      .modal-sheet { border-radius: var(--radius-lg); }
-    }
-    .modal-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; margin: 0; }
-    .modal-close {
-      position: absolute; top: var(--space-4); inset-inline-end: var(--space-4);
-      background: none; border: none; font-size: 20px; color: var(--color-text-muted);
-      cursor: pointer; padding: var(--space-2); border-radius: var(--radius-sm);
-    }
-    .modal-close:hover { color: var(--color-text); background: var(--color-bg); }
-    .modal-overlay-inner { position: relative; width: 100%; max-width: var(--max-content-width); }
-
-    /* ---- Tasks ---- */
-    .task-compose {
-      display: flex; gap: var(--space-2);
-      margin-block-end: var(--space-4);
-    }
-    .task-input {
-      flex: 1; min-width: 0;
-      padding: var(--space-3) var(--space-4);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      background: var(--color-surface);
-      font-size: 15px; color: var(--color-text);
-      transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease);
-    }
-    .task-input:focus {
-      outline: none; border-color: var(--color-accent);
-      box-shadow: 0 0 0 3px var(--color-accent-soft);
-    }
-    .task-add-btn {
-      flex-shrink: 0;
-      font-size: 22px; font-weight: 400;
-      padding-inline: var(--space-5);
-      border-radius: var(--radius);
-      min-height: 48px;
-    }
-    .task-filter-bar {
-      display: flex; gap: var(--space-2);
-      margin-block-end: var(--space-4);
-    }
-    .task-filter-btn {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      font-size: 13px; font-weight: 500;
-      padding: var(--space-2) var(--space-3);
-      color: var(--color-text-muted);
-      cursor: pointer;
-      transition: all 120ms var(--ease);
-    }
-    .task-filter-btn:hover { border-color: var(--color-border-strong); color: var(--color-text); }
-    .task-filter-btn.active {
-      background: var(--color-accent); border-color: var(--color-accent);
-      color: #fff;
-    }
-    .task-row {
-      display: flex; align-items: center; gap: var(--space-3);
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius);
-      padding: var(--space-3) var(--space-4);
-      margin-block-end: var(--space-2);
-      transition: border-color 150ms var(--ease), opacity 200ms var(--ease);
-    }
-    .task-row:hover { border-color: var(--color-border-strong); }
-    .task-row-done { opacity: 0.6; }
-    .task-check-wrap {
-      flex-shrink: 0; position: relative;
-      width: 20px; height: 20px; cursor: pointer;
-    }
-    .task-check-wrap input { opacity: 0; position: absolute; inset: 0; cursor: pointer; }
-    .task-check-box {
-      display: block; width: 20px; height: 20px;
-      border: 1.5px solid var(--color-border-strong);
-      border-radius: 5px;
-      transition: background 150ms var(--ease), border-color 150ms var(--ease);
-    }
-    .task-check-wrap input:checked ~ .task-check-box {
-      background: var(--color-accent); border-color: var(--color-accent);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1,4.5 4.5,8 11,1'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 10px;
-    }
-    .task-title {
-      font-size: 15px; min-width: 0;
-      word-break: break-word;
-      transition: text-decoration 150ms;
-    }
-    .task-row-done .task-title {
-      text-decoration: line-through;
-      color: var(--color-text-muted);
-    }
-    .task-delete {
-      background: none; border: none;
-      color: var(--color-text-faint); cursor: pointer;
-      padding: var(--space-2); border-radius: var(--radius-sm);
-      display: flex; align-items: center;
-      transition: color 120ms, background 120ms;
-      flex-shrink: 0;
-    }
-    .task-delete:hover { color: var(--color-danger); background: var(--color-danger-soft); }
-
-    .flag-btn {
-      flex-shrink: 0;
-      background: var(--color-danger-soft);
-      border: 1px solid var(--color-danger);
-      color: var(--color-danger);
-      font-size: 12px; font-weight: 600;
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all 120ms var(--ease);
-      white-space: nowrap;
-    }
-    .flag-btn:hover:not(:disabled) { background: var(--color-danger); color: #fff; }
-    .flag-btn-disabled, .flag-btn:disabled {
-      opacity: 0.5; cursor: not-allowed;
-      background: var(--color-bg); border-color: var(--color-border);
-      color: var(--color-text-muted);
-    }
+    /* ---- Tasks + Questions ---- */
+    .task-filter-btn { background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); font-size:13px; font-weight:500; padding:var(--space-2) var(--space-3); color:var(--color-text-muted); cursor:pointer; transition:all 120ms var(--ease); }
+    .task-filter-btn:hover { border-color:var(--color-border-strong); color:var(--color-text); }
+    .task-filter-btn.active { background:var(--color-accent); border-color:var(--color-accent); color:#fff; }
+    .task-row { display:flex; align-items:center; gap:var(--space-3); background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius); padding:var(--space-3) var(--space-4); margin-block-end:var(--space-2); transition:border-color 150ms var(--ease); }
+    .task-row:hover { border-color:var(--color-border-strong); }
+    .task-row-done { opacity:0.6; }
+    .task-check-wrap { flex-shrink:0; position:relative; width:20px; height:20px; cursor:pointer; }
+    .task-check-wrap input { opacity:0; position:absolute; inset:0; cursor:pointer; }
+    .task-check-box { display:block; width:20px; height:20px; border:1.5px solid var(--color-border-strong); border-radius:5px; transition:background 150ms var(--ease), border-color 150ms var(--ease); }
+    .task-check-wrap input:checked ~ .task-check-box { background:var(--color-accent); border-color:var(--color-accent); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1,4.5 4.5,8 11,1'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center; background-size:10px; }
+    .task-delete { background:none; border:none; color:var(--color-text-faint); cursor:pointer; padding:var(--space-2); border-radius:var(--radius-sm); display:flex; align-items:center; transition:color 120ms, background 120ms; flex-shrink:0; }
+    .task-delete:hover { color:var(--color-danger); background:var(--color-danger-soft); }
+    .flag-btn { flex-shrink:0; background:var(--color-danger-soft); border:1px solid var(--color-danger); color:var(--color-danger); font-size:12px; font-weight:600; padding:var(--space-2) var(--space-3); border-radius:var(--radius-sm); cursor:pointer; transition:all 120ms var(--ease); white-space:nowrap; font-family:inherit; }
+    .flag-btn:hover:not(:disabled) { background:var(--color-danger); color:#fff; }
+    .flag-btn-disabled, .flag-btn:disabled { opacity:0.5; cursor:not-allowed; background:var(--color-bg); border-color:var(--color-border); color:var(--color-text-muted); }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:flex-end; justify-content:center; z-index:200; }
+    @media (min-width:480px) { .modal-overlay { align-items:center; padding:var(--space-6); } }
+    .modal-sheet { background:var(--color-surface); border-radius:var(--radius-lg) var(--radius-lg) 0 0; width:100%; max-width:var(--max-content-width); padding:var(--space-6); display:flex; flex-direction:column; gap:var(--space-5); max-height:90vh; overflow-y:auto; }
+    @media (min-width:480px) { .modal-sheet { border-radius:var(--radius-lg); } }
 
   </style>
 </head>
@@ -757,16 +593,15 @@
         <button type="submit" id="login-btn" class="btn btn-primary" data-i18n="login.signin">Sign in</button>
         <div id="login-error" class="error-message" style="text-align:center" hidden></div>
       </form>
+      <div class="lang-toggle">
+        <button type="button" class="lang-btn" data-lang="en">English</button>
+        <span class="lang-sep">·</span>
+        <button type="button" class="lang-btn" data-lang="ar">العربية</button>
+      </div>
     </div>
   </main>
 
   <div class="app-shell" id="app-view" hidden>
-    <div class="debug-bar" id="debug-bar" hidden>
-      <span>🛠 DEBUG</span>
-      <span id="dbg-role"></span>
-      <span id="dbg-qa"></span>
-      <span id="dbg-file">file: shiftly-v3.html</span>
-    </div>
     <header class="app-header">
       <div class="header-left">
         <button type="button" id="back-btn" class="back-btn" hidden>
@@ -837,12 +672,10 @@
           managers: "Reports to (managers)",
           managers_hint: "Pick the people this user reports to. Anyone above them in the tree will see this user\u2019s work.",
           managers_empty: "No other users yet.",
+          questions_access: "Questions access", questions_access_hint: "Allow access to Questions tab",
           status: "Status",
           active_label: "Active",
           active_hint: "Inactive users can\u2019t sign in.",
-          questions_access: "Questions access",
-          questions_access_hint: "This user can view, add, and edit questions in the Questions tab.",
-          questions_access_label: "Allow access to Questions tab",
           save: "Save", cancel: "Cancel",
           save_failed: "Save failed"
         },
@@ -861,53 +694,29 @@
           no_target: "No target time",
           days_short: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
         },
-        questions: {
-          title: "Questions",
-          subtitle: "Create questions with dropdown options and assign a handler.",
-          new_question: "New question",
-          search_placeholder: "Search questions",
-          empty: "No questions yet. Create the first one.",
-          empty_search: "No questions match.",
-          question_label: "Question",
-          question_placeholder: "e.g. What is the issue type?",
-          options_label: "Answer options",
-          options_hint: "One option per line. At least 2 required.",
-          options_placeholder: "Option A\nOption B\nOption C",
-          assignee_label: "Assigned handler",
-          assignee_hint: "This user receives a task whenever this question is triggered.",
-          no_assignee: "No users available.",
-          save: "Save", cancel: "Cancel",
-          save_failed: "Could not save question.",
-          needs_label: "Please enter a question.",
-          needs_options: "Add at least 2 answer options.",
-          needs_assignee: "Select a handler for this question.",
-          new_title: "New question",
-          edit_title: "Edit question",
-          options_count: "options"
-        },
         tasks: {
-          title: "Tasks",
-          subtitle: "Your personal to-do list.",
-          new_task: "New task",
-          placeholder: "What needs to be done?",
-          empty: "No tasks yet. Add one above.",
-          done_label: "Done",
-          open_label: "Open",
-          filter_all: "All",
-          filter_open: "Open",
-          filter_done: "Done",
-          delete_confirm: "Delete this task?",
-          added: "Task added.",
-          auto_label: "Auto-assigned",
-          flag_modal_title: "Flag this item",
-          flag_answer_label: "Select an answer",
-          flag_comment_label: "Comment",
-          flag_comment_placeholder: "Describe the issue…",
-          flag_submit: "Submit & create task",
-          flag_already_open: "A task is already open for this item.",
-          flag_submitting: "Submitting…",
-          flag_no_question: "No question linked to this item.",
+          title: "Tasks", subtitle: "Your personal to-do list.",
+          placeholder: "What needs to be done?", empty: "No tasks yet. Add one above.",
+          filter_all: "All", filter_open: "Open", filter_done: "Done",
+          delete_confirm: "Delete this task?", auto_label: "Auto-assigned",
+          flag_modal_title: "Flag this item", flag_answer_label: "Select an answer",
+          flag_comment_label: "Comment", flag_comment_placeholder: "Describe the issue…",
+          flag_submit: "Submit & create task", flag_already_open: "A task is already open for this item.",
+          flag_submitting: "Submitting…", flag_no_question: "No question linked to this item.",
           save_failed: "Could not save task."
+        },
+        questions: {
+          title: "Questions", subtitle: "Create questions with dropdown options and assign a handler.",
+          new_question: "New question", search_placeholder: "Search questions",
+          empty: "No questions yet. Create the first one.", empty_search: "No questions match.",
+          question_label: "Question", question_placeholder: "e.g. What is the issue type?",
+          options_label: "Answer options", options_hint: "One option per line. At least 2 required.",
+          assignee_label: "Assigned handler", assignee_hint: "This user receives a task when this question is triggered.",
+          no_assignee: "No users available.", save: "Save", cancel: "Cancel",
+          save_failed: "Could not save question.", needs_label: "Please enter a question.",
+          needs_options: "Add at least 2 answer options.", needs_assignee: "Select a handler.",
+          new_title: "New question", edit_title: "Edit question", options_count: "options",
+          access_label: "Allow access to Questions tab", access_hint: "This user can view, add and edit questions."
         },
         checklist_form: {
           new_title: "New checklist",
@@ -931,7 +740,7 @@
           requires_photo: "Photo required",
           requires_comment: "Comment required",
           linked_question: "Linked question (flag trigger)",
-          linked_question_hint: "When flagged, user must pick an answer. A task is auto-created for the question handler.",
+          linked_question_hint: "When flagged, user picks an answer and a task is auto-created.",
           no_question: "None",
           min_max_photos: "Photos: min / max",
           remove: "Remove",
@@ -948,26 +757,172 @@
           needs_assignees: "Assign at least one user.",
           needs_days: "Select at least one active day."
         }
+      },
+      ar: {
+        login: {
+          tagline: "\u062a\u062f\u0642\u064a\u0642 \u064a\u0648\u0645\u064a \u0644\u0644\u0641\u0650\u0631\u064e\u0642",
+          email: "\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a",
+          password: "\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+          signin: "\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644",
+          signing_in: "\u062c\u0627\u0631\u064d \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644\u2026",
+          error_generic: "\u062a\u0639\u0630\u0651\u0631 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644. \u062a\u062d\u0642\u0651\u0642 \u0645\u0646 \u0628\u064a\u0627\u0646\u0627\u062a\u0643 \u0648\u062d\u0627\u0648\u0644 \u0645\u062c\u062f\u062f\u064b\u0627."
+        },
+        app: {
+          logout: "\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062e\u0631\u0648\u062c",
+          back: "\u0631\u062c\u0648\u0639",
+          saving: "\u062c\u0627\u0631\u064d \u0627\u0644\u062d\u0641\u0638\u2026",
+          loading: "\u062c\u0627\u0631\u064d \u0627\u0644\u062a\u062d\u0645\u064a\u0644\u2026"
+        },
+        role: {
+          admin: "\u0645\u0633\u0624\u0648\u0644",
+          manager: "\u0645\u062f\u064a\u0631",
+          user: "\u0645\u0633\u062a\u062e\u062f\u0645"
+        },
+        home: {
+          welcome: "\u0645\u0631\u062d\u0628\u064b\u0627",
+          admin_subtitle: "\u0625\u062f\u0627\u0631\u0629 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u0648\u0627\u0644\u0647\u064a\u0643\u0644 \u0627\u0644\u062a\u0646\u0638\u064a\u0645\u064a \u0648\u0633\u062c\u0644 \u0627\u0644\u062a\u062f\u0642\u064a\u0642.",
+          manager_subtitle: "\u0645\u0631\u0627\u062c\u0639\u0629 \u0627\u0644\u0625\u0631\u0633\u0627\u0644\u064a\u0627\u062a \u0648\u0625\u062f\u0627\u0631\u0629 \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u0644\u0641\u0631\u064a\u0642\u0643.",
+          user_subtitle: "\u0623\u0643\u0645\u0644 \u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u062a\u062d\u0642\u0642 \u0644\u0645\u0646\u0627\u0648\u0628\u062a\u0643 \u0627\u0644\u062d\u0627\u0644\u064a\u0629.",
+          users: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646",
+          users_hint: "\u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646 \u0648\u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0645\u062f\u064a\u0631\u064a\u0646 \u0648\u0627\u0644\u0623\u062f\u0648\u0627\u0631 \u0648\u0627\u0644\u0623\u0642\u0633\u0627\u0645.",
+          checklists: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          checklists_hint: "\u0625\u0646\u0634\u0627\u0621 \u0648\u062a\u0639\u064a\u064a\u0646 \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u0627\u0644\u064a\u0648\u0645\u064a\u0629 \u0644\u0641\u0631\u064a\u0642\u0643.",
+          audit_log: "\u0633\u062c\u0644 \u0627\u0644\u062a\u062f\u0642\u064a\u0642",
+          audit_hint: "\u0645\u0631\u0627\u062c\u0639\u0629 \u0625\u062c\u0631\u0627\u0621\u0627\u062a \u0627\u0644\u0645\u0633\u0624\u0648\u0644 \u0648\u062a\u063a\u064a\u064a\u0631\u0627\u062a \u0627\u0644\u0646\u0638\u0627\u0645.",
+          no_checklists_yet: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0642\u0648\u0627\u0626\u0645 \u062a\u062d\u0642\u0642 \u0645\u0639\u064a\u0651\u0646\u0629 \u0628\u0639\u062f.",
+          contact_manager: "\u0633\u064a\u0642\u0648\u0645 \u0645\u062f\u064a\u0631\u0643 \u0628\u0625\u0639\u062f\u0627\u062f\u0647\u0627 \u0642\u0631\u064a\u0628\u064b\u0627.",
+          no_data_yet: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0634\u064a\u0621 \u0645\u0639\u064a\u0651\u0646 \u0644\u0643 \u0628\u0639\u062f.",
+          contact_admin: "\u062a\u0648\u0627\u0635\u0644 \u0645\u0639 \u0627\u0644\u0645\u0633\u0624\u0648\u0644 \u0644\u0625\u0639\u062f\u0627\u062f \u062d\u0633\u0627\u0628\u0643."
+        },
+        users: {
+          title: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646",
+          subtitle: "\u0625\u062f\u0627\u0631\u0629 \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0633\u0627\u0628\u0627\u062a \u0648\u0627\u0644\u0647\u064a\u0643\u0644 \u0627\u0644\u062a\u0646\u0638\u064a\u0645\u064a.",
+          new_user: "\u0645\u0633\u062a\u062e\u062f\u0645 \u062c\u062f\u064a\u062f",
+          search_placeholder: "\u0627\u0628\u062d\u062b \u0628\u0627\u0644\u0627\u0633\u0645 \u0623\u0648 \u0627\u0644\u0628\u0631\u064a\u062f \u0623\u0648 \u0627\u0644\u0642\u0633\u0645",
+          empty: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0628\u0639\u062f. \u0627\u0628\u062f\u0623 \u0628\u0625\u0646\u0634\u0627\u0621 \u0648\u0627\u062d\u062f.",
+          empty_search: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0646\u062a\u0627\u0626\u062c \u0645\u0637\u0627\u0628\u0642\u0629.",
+          reports_to: "\u064a\u062a\u0628\u0639",
+          inactive: "\u063a\u064a\u0631 \u0646\u0634\u0637"
+        },
+        user_form: {
+          new_title: "\u0645\u0633\u062a\u062e\u062f\u0645 \u062c\u062f\u064a\u062f",
+          edit_title: "\u062a\u0639\u062f\u064a\u0644 \u0645\u0633\u062a\u062e\u062f\u0645",
+          full_name: "\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644",
+          email: "\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a",
+          password: "\u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631",
+          password_hint: "8 \u0623\u062d\u0631\u0641 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644. \u0634\u0627\u0631\u0643 \u0643\u0644\u0645\u0629 \u0627\u0644\u0645\u0631\u0648\u0631 \u0628\u0623\u0645\u0627\u0646.",
+          email_locked: "\u0644\u0627 \u064a\u0645\u0643\u0646 \u062a\u063a\u064a\u064a\u0631 \u0627\u0644\u0628\u0631\u064a\u062f \u0628\u0639\u062f \u0627\u0644\u0625\u0646\u0634\u0627\u0621.",
+          role: "\u0627\u0644\u062f\u0648\u0631",
+          department: "\u0627\u0644\u0642\u0633\u0645",
+          department_placeholder: "\u0645\u062b\u0644 \u0627\u0644\u0645\u0628\u064a\u0639\u0627\u062a \u0623\u0648 \u0627\u0644\u0645\u0639\u0631\u0636 \u0623\u0648 \u0627\u0644\u0645\u0633\u062a\u0648\u062f\u0639",
+          job_title: "\u0627\u0644\u0645\u0633\u0645\u0649 \u0627\u0644\u0648\u0638\u064a\u0641\u064a",
+          job_title_placeholder: "\u0645\u062b\u0644 \u0645\u062f\u064a\u0631 \u0645\u062a\u062c\u0631",
+          phone: "\u0627\u0644\u0647\u0627\u062a\u0641",
+          phone_placeholder: "\u0627\u062e\u062a\u064a\u0627\u0631\u064a",
+          managers: "\u064a\u062a\u0628\u0639 \u0644\u0640 (\u0627\u0644\u0645\u062f\u064a\u0631\u0648\u0646)",
+          managers_hint: "\u0627\u062e\u062a\u0631 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0627\u0644\u0630\u064a\u0646 \u064a\u062a\u0628\u0639 \u0644\u0647\u0645 \u0647\u0630\u0627 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645.",
+          managers_empty: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0622\u062e\u0631\u0648\u0646 \u0628\u0639\u062f.",
+          status: "\u0627\u0644\u062d\u0627\u0644\u0629",
+          active_label: "\u0646\u0634\u0637",
+          active_hint: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u063a\u064a\u0631 \u0627\u0644\u0646\u0634\u0637\u064a\u0646 \u0644\u0627 \u064a\u0633\u062a\u0637\u064a\u0639\u0648\u0646 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644.",
+          save: "\u062d\u0641\u0638",
+          cancel: "\u0625\u0644\u063a\u0627\u0621",
+          save_failed: "\u0641\u0634\u0644 \u0627\u0644\u062d\u0641\u0638"
+        },
+        checklists: {
+          title: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          subtitle: "\u0625\u0646\u0634\u0627\u0621 \u0648\u0625\u062f\u0627\u0631\u0629 \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u0627\u0644\u064a\u0648\u0645\u064a\u0629.",
+          new: "\u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642 \u062c\u062f\u064a\u062f\u0629",
+          search_placeholder: "\u0627\u0628\u062d\u062b \u0641\u064a \u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642",
+          empty: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0642\u0648\u0627\u0626\u0645 \u0628\u0639\u062f. \u0627\u0628\u062f\u0623 \u0628\u0625\u0646\u0634\u0627\u0621 \u0648\u0627\u062d\u062f\u0629.",
+          empty_search: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0646\u062a\u0627\u0626\u062c \u0645\u0637\u0627\u0628\u0642\u0629.",
+          inactive: "\u063a\u064a\u0631 \u0646\u0634\u0637",
+          items_label: "\u0639\u0646\u0627\u0635\u0631",
+          assignees_label: "\u0645\u0639\u064a\u0651\u0646",
+          daily: "\u064a\u0648\u0645\u064a",
+          no_days: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0623\u064a\u0627\u0645 \u0645\u062d\u062f\u062f\u0629",
+          no_target: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0648\u0642\u062a \u0645\u0633\u062a\u0647\u062f\u0641",
+          days_short: ["\u0623\u062d\u062f","\u0625\u062b\u0646","\u062b\u0644\u0627","\u0623\u0631\u0628","\u062e\u0645\u064a","\u062c\u0645\u0639","\u0633\u0628\u062a"]
+        },
+        checklist_form: {
+          new_title: "\u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642 \u062c\u062f\u064a\u062f\u0629",
+          edit_title: "\u062a\u0639\u062f\u064a\u0644 \u0642\u0627\u0626\u0645\u0629 \u062a\u062d\u0642\u0642",
+          name: "\u0627\u0644\u0627\u0633\u0645",
+          name_placeholder: "\u0645\u062b\u0644: \u0627\u0641\u062a\u062a\u0627\u062d \u0627\u0644\u0635\u0628\u0627\u062d",
+          description: "\u0627\u0644\u0648\u0635\u0641",
+          description_placeholder: "\u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u062e\u062a\u064a\u0627\u0631\u064a\u0629 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
+          schedule: "\u0627\u0644\u062c\u062f\u0648\u0644",
+          active_days: "\u0627\u0644\u0623\u064a\u0627\u0645 \u0627\u0644\u0646\u0634\u0637\u0629",
+          active_days_hint: "\u0623\u064a\u0627\u0645 \u0627\u0644\u0623\u0633\u0628\u0648\u0639 \u0627\u0644\u062a\u064a \u062a\u0639\u0645\u0644 \u0641\u064a\u0647\u0627 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.",
+          target_time: "\u0627\u0644\u0648\u0642\u062a \u0627\u0644\u0645\u0633\u062a\u0647\u062f\u0641",
+          target_time_hint: "\u0627\u062e\u062a\u064a\u0627\u0631\u064a. \u0645\u062a\u0649 \u064a\u062c\u0628 \u0625\u0643\u0645\u0627\u0644 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629.",
+          grace_minutes: "\u062f\u0642\u0627\u0626\u0642 \u0627\u0644\u0633\u0645\u0627\u062d",
+          grace_hint: "\u0627\u0644\u062f\u0642\u0627\u0626\u0642 \u0628\u0639\u062f \u0627\u0644\u0648\u0642\u062a \u0627\u0644\u0645\u0633\u062a\u0647\u062f\u0641 \u0642\u0628\u0644 \u0627\u0644\u0625\u0628\u0644\u0627\u063a \u0639\u0646 \u0627\u0644\u0641\u0642\u062f.",
+          items: "\u0627\u0644\u0639\u0646\u0627\u0635\u0631",
+          items_hint: "\u0627\u0644\u0645\u0647\u0627\u0645 \u0627\u0644\u062a\u064a \u0633\u064a\u0642\u0648\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0628\u0627\u0644\u062a\u062d\u0642\u0642 \u0645\u0646\u0647\u0627.",
+          add_item: "\u0625\u0636\u0627\u0641\u0629 \u0639\u0646\u0635\u0631",
+          no_items: "\u0644\u0627 \u062a\u0648\u062c\u062f \u0639\u0646\u0627\u0635\u0631 \u0628\u0639\u062f.",
+          item_placeholder: "\u0645\u062b\u0644: \u062a\u0645 \u0642\u0641\u0644 \u0627\u0644\u0628\u0627\u0628 \u0627\u0644\u0623\u0645\u0627\u0645\u064a",
+          requires_photo: "\u0627\u0644\u0635\u0648\u0631\u0629 \u0645\u0637\u0644\u0648\u0628\u0629",
+          requires_comment: "\u0627\u0644\u062a\u0639\u0644\u064a\u0642 \u0645\u0637\u0644\u0648\u0628",
+          min_max_photos: "\u0627\u0644\u0635\u0648\u0631: \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u062f\u0646\u0649 / \u0627\u0644\u0623\u0642\u0635\u0649",
+          remove: "\u0625\u0632\u0627\u0644\u0629",
+          assignees: "\u0645\u0639\u064a\u0651\u0646 \u0625\u0644\u0649",
+          assignees_hint: "\u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0627\u0644\u0630\u064a\u0646 \u0633\u064a\u0643\u0645\u0644\u0648\u0646 \u0647\u0630\u0647 \u0627\u0644\u0642\u0627\u0626\u0645\u0629 \u064a\u0648\u0645\u064a\u064b\u0627.",
+          no_users: "\u0644\u0627 \u064a\u0648\u062c\u062f \u0645\u0633\u062a\u062e\u062f\u0645\u0648\u0646 \u0645\u062a\u0627\u062d\u0648\u0646.",
+          status: "\u0627\u0644\u062d\u0627\u0644\u0629",
+          active_label: "\u0646\u0634\u0637",
+          active_hint: "\u0642\u0648\u0627\u0626\u0645 \u0627\u0644\u062a\u062d\u0642\u0642 \u063a\u064a\u0631 \u0627\u0644\u0646\u0634\u0637\u0629 \u0644\u0627 \u062a\u0638\u0647\u0631 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645\u064a\u0646.",
+          save: "\u062d\u0641\u0638",
+          cancel: "\u0625\u0644\u063a\u0627\u0621",
+          save_failed: "\u0641\u0634\u0644 \u0627\u0644\u062d\u0641\u0638",
+          needs_name: "\u0627\u0644\u0631\u062c\u0627\u0621 \u0625\u062f\u062e\u0627\u0644 \u0627\u0633\u0645.",
+          needs_items: "\u0623\u0636\u0641 \u0639\u0646\u0635\u0631\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644.",
+          needs_assignees: "\u0639\u064a\u0651\u0646 \u0645\u0633\u062a\u062e\u062f\u0645\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644.",
+          needs_days: "\u0627\u062e\u062a\u0631 \u064a\u0648\u0645\u064b\u0627 \u0646\u0634\u0637\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644."
+        }
       }
     };
 
     // ========== I18N ==========
     const I18n = (() => {
+      let current = "en";
       function t(key, fb) {
         const parts = key.split(".");
-        let v = STRINGS["en"];
+        let v = STRINGS[current];
         for (const p of parts) {
           if (v && typeof v === "object" && p in v) v = v[p];
           else return fb ?? key;
         }
         return v ?? (fb ?? key);
       }
-      function init() {
+      function apply() {
         document.querySelectorAll("[data-i18n]").forEach(el => {
           el.textContent = t(el.getAttribute("data-i18n"), el.textContent);
         });
       }
-      return { init, t, getLang: () => "en" };
+      function direction() {
+        document.documentElement.dir = current === "ar" ? "rtl" : "ltr";
+        document.documentElement.lang = current;
+      }
+      function setLang(lang) {
+        if (!STRINGS[lang]) lang = "en";
+        current = lang;
+        localStorage.setItem("shiftly_lang", lang);
+        direction(); apply();
+        document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+        sb.auth.getSession().then(({ data: { session } }) => {
+          if (session) sb.from("profiles").update({ preferred_language: lang }).eq("id", session.user.id);
+        });
+        if (App.state.profile) Router.rerender();
+      }
+      function init() {
+        setLang(localStorage.getItem("shiftly_lang") || "en");
+        document.querySelectorAll(".lang-btn").forEach(b => {
+          b.addEventListener("click", () => setLang(b.dataset.lang));
+        });
+      }
+      return { init, t, setLang, getLang: () => current };
     })();
 
     // ========== AUTH ==========
@@ -975,41 +930,14 @@
       async function getCurrentProfile() {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
-
-        // Fetch all columns and let us figure out the schema
-        let profile, error;
-        ({ data: profile, error } = await sb.from("profiles")
-          .select("*")
-          .eq("id", session.user.id).single());
-
-        if (error || !profile) {
-          await sb.auth.signOut();
-          return null;
-        }
-
-        // Normalize name — try common column names
-        if (!profile.full_name) {
-          profile.full_name =
-            profile.name ||
-            profile.display_name ||
-            profile.username ||
-            ((profile.first_name || "") + " " + (profile.last_name || "")).trim() ||
-            profile.email ||
-            "User";
-        }
-
-        // Normalize role
+        const { data: profile, error } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
+        if (error || !profile) { await sb.auth.signOut(); return null; }
+        if (!profile.full_name) profile.full_name = profile.name || profile.display_name || ((profile.first_name||"")+" "+(profile.last_name||"")).trim() || profile.email || "User";
         profile.role = (profile.role || "user").toLowerCase();
-
-        // Normalize active — support both boolean and string status
-        const statusVal = String(profile.status || profile.active || "active").toLowerCase();
-        if (statusVal === "inactive" || statusVal === "false") {
-          await sb.auth.signOut();
-          return null;
-        }
+        const sv = String(profile.status || profile.active || "active").toLowerCase();
+        if (sv === "inactive" || sv === "false") { await sb.auth.signOut(); return null; }
         profile.active = true;
         profile.questions_access = profile.questions_access ?? false;
-
         return profile;
       }
       async function login(email, password) {
@@ -1018,7 +946,7 @@
         });
         if (error) throw error;
         const profile = await getCurrentProfile();
-        if (!profile) throw new Error("Could not load your profile. Contact your admin.");
+        if (!profile) throw new Error("Your account isn't active. Contact your admin.");
         return profile;
       }
       async function logout() {
@@ -1032,34 +960,21 @@
     // ========== API ==========
     const API = {
       async listUsers() {
-        let users, error;
-        ({ data: users, error } = await sb.from("profiles")
-          .select("*")
-          .order("full_name", { nullsFirst: false }));
+        const { data: raw, error } = await sb.from("profiles").select("*").order("full_name", { nullsFirst: false });
         if (error) throw error;
-        users = (users || []).map(u => {
-          if (!u.full_name) {
-            u.full_name =
-              u.name || u.display_name || u.username ||
-              ((u.first_name || "") + " " + (u.last_name || "")).trim() ||
-              u.email || "User";
-          }
-          u.role = (u.role || "user").toLowerCase();
-          const sv = String(u.status || u.active || "active").toLowerCase();
+        const users = (raw||[]).map(u => {
+          if (!u.full_name) u.full_name = u.name||u.display_name||((u.first_name||"")+" "+(u.last_name||"")).trim()||u.email||"User";
+          u.role = (u.role||"user").toLowerCase();
+          const sv = String(u.status||u.active||"active").toLowerCase();
           u.active = sv !== "inactive" && sv !== "false";
           u.questions_access = u.questions_access ?? false;
           return u;
         });
-        const { data: links, error: lErr } = await sb.from("user_managers")
-          .select("user_id, manager_id");
-        if (lErr) throw lErr;
+        const { data: links } = await sb.from("user_managers").select("user_id, manager_id");
         const byUser = {};
-        for (const l of (links || [])) (byUser[l.user_id] ||= []).push(l.manager_id);
-        const usersById = Object.fromEntries(users.map(u => [u.id, u]));
-        return users.map(u => ({
-          ...u,
-          managers: (byUser[u.id] || []).map(mid => usersById[mid]).filter(Boolean)
-        }));
+        for (const l of (links||[])) (byUser[l.user_id] ||= []).push(l.manager_id);
+        const usersById = Object.fromEntries(users.map(u=>[u.id,u]));
+        return users.map(u=>({...u,managers:(byUser[u.id]||[]).map(mid=>usersById[mid]).filter(Boolean)}));
       },
       async createUser(payload) {
         const { data, error } = await sb.functions.invoke("create-user", { body: payload });
@@ -1164,105 +1079,62 @@
         if (error) throw error;
       },
       async listQuestions() {
-        const { data, error } = await sb.from("questions")
-          .select("id, label, options, assignee_id, created_at")
-          .order("created_at", { ascending: false });
-        if (error) return []; // table may not exist yet
+        const { data, error } = await sb.from("questions").select("id, label, options, assignee_id, created_at").order("created_at", { ascending: false });
+        if (error) return [];
         return data || [];
       },
       async getQuestion(id) {
-        const { data, error } = await sb.from("questions")
-          .select("id, label, options, assignee_id").eq("id", id).single();
+        const { data, error } = await sb.from("questions").select("id, label, options, assignee_id").eq("id", id).single();
         if (error) throw error;
         return data;
       },
       async saveQuestion(payload, existingId) {
         const { data: { user } } = await sb.auth.getUser();
         if (existingId) {
-          const { error } = await sb.from("questions").update({
-            label: payload.label, options: payload.options, assignee_id: payload.assignee_id
-          }).eq("id", existingId);
+          const { error } = await sb.from("questions").update({ label: payload.label, options: payload.options, assignee_id: payload.assignee_id }).eq("id", existingId);
           if (error) throw error;
         } else {
-          const { error } = await sb.from("questions").insert({
-            label: payload.label, options: payload.options,
-            assignee_id: payload.assignee_id, created_by: user.id
-          });
+          const { error } = await sb.from("questions").insert({ label: payload.label, options: payload.options, assignee_id: payload.assignee_id, created_by: user.id });
           if (error) throw error;
         }
-      },
-      async deleteQuestion(id) {
-        const { error } = await sb.from("questions").delete().eq("id", id);
-        if (error) throw error;
-      },
-      async setUserQuestionsAccess(userId, hasAccess) {
-        const { error } = await sb.from("profiles")
-          .update({ questions_access: hasAccess }).eq("id", userId);
-        if (error) throw error;
-      },
-      async hasPendingFlagTask(checklistItemId) {
-        const { data, error } = await sb.from("tasks")
-          .select("id").eq("checklist_item_id", checklistItemId)
-          .eq("done", false).limit(1);
-        if (error) return false; // column may not exist yet
-        return (data || []).length > 0;
-      },
-      async createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel, answer, comment, assigneeId }) {
-        const { data: { user } } = await sb.auth.getUser();
-        const title = `${checklistName} › ${itemLabel} › ${questionLabel} › ${comment}`;
-        const { data, error } = await sb.from("tasks").insert({
-          title,
-          user_id: assigneeId,
-          flagged_by: user.id,
-          done: false,
-          source: "auto",
-          checklist_item_id: checklistItemId,
-          question_answer: answer,
-          flag_comment: comment
-        }).select("id").single();
-        if (error) throw error;
-        return data;
       },
       async listTasks() {
         const { data: { user } } = await sb.auth.getUser();
         let data, error;
-        ({ data, error } = await sb.from("tasks")
-          .select("id, title, done, source, created_at, question_answer, flag_comment")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false }));
-        if (error) {
-          // Fallback if new columns not migrated yet
-          ({ data, error } = await sb.from("tasks")
-            .select("id, title, done, created_at")
-            .eq("user_id", user.id)
-            .order("created_at", { ascending: false }));
-        }
+        ({ data, error } = await sb.from("tasks").select("id, title, done, source, created_at").eq("user_id", user.id).order("created_at", { ascending: false }));
+        if (error) ({ data, error } = await sb.from("tasks").select("id, title, done, created_at").eq("user_id", user.id).order("created_at", { ascending: false }));
         if (error) throw error;
         return (data || []).map(t => ({ ...t, source: t.source ?? "manual" }));
       },
-      async countOpenAssignedTasks() {
-        const { data: { user } } = await sb.auth.getUser();
-        const { count, error } = await sb.from("tasks")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id).eq("done", false);
-        if (error) return 0;
-        return count || 0;
-      },
       async createTask(title) {
         const { data: { user } } = await sb.auth.getUser();
-        const { data, error } = await sb.from("tasks")
-          .insert({ title, user_id: user.id, done: false })
-          .select("id, title, done, created_at").single();
+        const { data, error } = await sb.from("tasks").insert({ title, user_id: user.id, done: false, source: "manual" }).select("id, title, done, created_at").single();
         if (error) throw error;
-        return data;
+        return { ...data, source: "manual" };
       },
-      async toggleTask(id, done) {
-        const { error } = await sb.from("tasks").update({ done }).eq("id", id);
+      async toggleTask(id, done) { const { error } = await sb.from("tasks").update({ done }).eq("id", id); if (error) throw error; },
+      async deleteTask(id) { const { error } = await sb.from("tasks").delete().eq("id", id); if (error) throw error; },
+      async countOpenTasks() {
+        const { data: { user } } = await sb.auth.getUser();
+        const { count } = await sb.from("tasks").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("done", false);
+        return count || 0;
+      },
+      async hasPendingFlagTask(checklistItemId) {
+        const { data, error } = await sb.from("tasks").select("id").eq("checklist_item_id", checklistItemId).eq("done", false).limit(1);
+        if (error) return false;
+        return (data || []).length > 0;
+      },
+      async createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel, answer, comment, assigneeId }) {
+        const { data: { user } } = await sb.auth.getUser();
+        const title = checklistName + " › " + itemLabel + " › " + questionLabel + " › " + comment;
+        const { error } = await sb.from("tasks").insert({ title, user_id: assigneeId, flagged_by: user.id, done: false, source: "auto", checklist_item_id: checklistItemId, question_answer: answer, flag_comment: comment });
         if (error) throw error;
       },
-      async deleteTask(id) {
-        const { error } = await sb.from("tasks").delete().eq("id", id);
-        if (error) throw error;
+      async getChecklistWithItems(id) {
+        const result = await this.getChecklist(id);
+        const { data: items } = await sb.from("checklist_items").select("id, position, label, requires_photo, requires_comment, min_photos, max_photos, question_id").eq("checklist_id", id).order("position");
+        if (items) result.items = items;
+        return result;
       }
     };
 
@@ -1329,8 +1201,8 @@
         if (!last) return go("home");
         if (last.route === "user-form") return go("users");
         if (last.route === "checklist-form") return go("checklists");
-        if (last.route === "checklist-do") return go("checklists");
         if (last.route === "question-form") return go("questions");
+        if (last.route === "checklist-do") return go("checklists");
         return go("home");
       }
       function rerender() { if (last) go(last.route, last.data); }
@@ -1340,89 +1212,49 @@
     // ========== FLAG MODAL ==========
     const FlagModal = {
       async show({ checklistItemId, checklistName, itemLabel, questionId, onSuccess }) {
-        // Check for existing open task
         const hasPending = await API.hasPendingFlagTask(checklistItemId);
-        if (hasPending) {
-          alert(I18n.t("tasks.flag_already_open"));
-          return;
-        }
-        if (!questionId) {
-          alert(I18n.t("tasks.flag_no_question"));
-          return;
-        }
+        if (hasPending) { alert(I18n.t("tasks.flag_already_open")); return; }
+        if (!questionId) { alert(I18n.t("tasks.flag_no_question")); return; }
         let question;
-        try { question = await API.getQuestion(questionId); }
-        catch(e) { alert(e.message); return; }
-
-        // Build modal
+        try { question = await API.getQuestion(questionId); } catch(e) { alert(e.message); return; }
         const overlay = document.createElement("div");
         overlay.className = "modal-overlay";
-        overlay.innerHTML = `
-          <div class="modal-overlay-inner">
-            <div class="modal-sheet">
-              <button class="modal-close" id="flag-close">\u00d7</button>
-              <h2 class="modal-title">${escape(I18n.t("tasks.flag_modal_title"))}</h2>
-              <p style="margin:0;color:var(--color-text-muted);font-size:14px">${escape(itemLabel)}</p>
-              <div class="field">
-                <label>${escape(question.label)}</label>
-                <select id="flag-answer">
-                  <option value="">— ${escape(I18n.t("tasks.flag_answer_label"))} —</option>
-                  ${(question.options || []).map(o => `<option value="${escape(o)}">${escape(o)}</option>`).join("")}
-                </select>
-              </div>
-              <div class="field">
-                <label>${escape(I18n.t("tasks.flag_comment_label"))}</label>
-                <textarea id="flag-comment" rows="3"
-                  placeholder="${escape(I18n.t("tasks.flag_comment_placeholder"))}"
-                  style="resize:vertical"></textarea>
-              </div>
-              <div id="flag-error" class="error-message" hidden></div>
-              <button class="btn btn-primary" id="flag-submit" style="width:100%">
-                ${escape(I18n.t("tasks.flag_submit"))}
-              </button>
-            </div>
-          </div>
-        `;
+        overlay.innerHTML = `<div style="position:relative;width:100%;max-width:var(--max-content-width)"><div class="modal-sheet">
+          <button id="flag-close" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-muted)">&times;</button>
+          <h2 style="font-family:var(--font-display);font-size:20px;font-weight:400;margin:0">${escape(I18n.t("tasks.flag_modal_title"))}</h2>
+          <p style="margin:0;color:var(--color-text-muted);font-size:14px">${escape(itemLabel)}</p>
+          <div class="field"><label>${escape(question.label)}</label>
+            <select id="flag-answer"><option value="">&mdash; ${escape(I18n.t("tasks.flag_answer_label"))} &mdash;</option>
+              ${(question.options||[]).map(o=>`<option value="${escape(o)}">${escape(o)}</option>`).join("")}
+            </select></div>
+          <div class="field"><label>${escape(I18n.t("tasks.flag_comment_label"))}</label>
+            <textarea id="flag-comment" rows="3" placeholder="${escape(I18n.t("tasks.flag_comment_placeholder"))}" style="resize:vertical"></textarea></div>
+          <div id="flag-error" class="error-message" hidden></div>
+          <button class="btn btn-primary" id="flag-submit" style="width:100%">${escape(I18n.t("tasks.flag_submit"))}</button>
+        </div></div>`;
         document.body.appendChild(overlay);
-
         const close = () => overlay.remove();
         overlay.querySelector("#flag-close").addEventListener("click", close);
-        overlay.addEventListener("click", e => { if (e.target === overlay) close(); });
-
+        overlay.addEventListener("click", e => { if (e.target===overlay) close(); });
         overlay.querySelector("#flag-submit").addEventListener("click", async () => {
-          const answer = overlay.querySelector("#flag-answer").value;
-          const comment = overlay.querySelector("#flag-comment").value.trim();
-          const errEl = overlay.querySelector("#flag-error");
-          const submitBtn = overlay.querySelector("#flag-submit");
-          errEl.hidden = true;
-
-          if (!answer) { errEl.textContent = I18n.t("tasks.flag_answer_label") + " — required"; errEl.hidden = false; return; }
-          if (!comment) { errEl.textContent = I18n.t("tasks.flag_comment_label") + " — required"; errEl.hidden = false; return; }
-
-          submitBtn.disabled = true;
-          submitBtn.textContent = I18n.t("tasks.flag_submitting");
+          const answer=overlay.querySelector("#flag-answer").value;
+          const comment=overlay.querySelector("#flag-comment").value.trim();
+          const errEl=overlay.querySelector("#flag-error");
+          const btn=overlay.querySelector("#flag-submit");
+          errEl.hidden=true;
+          if (!answer) { errEl.textContent=I18n.t("tasks.flag_answer_label")+" — required"; errEl.hidden=false; return; }
+          if (!comment) { errEl.textContent=I18n.t("tasks.flag_comment_label")+" — required"; errEl.hidden=false; return; }
+          btn.disabled=true; btn.textContent=I18n.t("tasks.flag_submitting");
           try {
-            await API.createFlagTask({
-              checklistItemId,
-              checklistName,
-              itemLabel,
-              questionLabel: question.label,
-              answer,
-              comment,
-              assigneeId: question.assignee_id
-            });
-            close();
-            if (onSuccess) onSuccess();
+            await API.createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel: question.label, answer, comment, assigneeId: question.assignee_id });
+            close(); if (onSuccess) onSuccess();
           } catch(e) {
-            errEl.textContent = e.message || I18n.t("tasks.save_failed");
-            errEl.hidden = false;
-            submitBtn.disabled = false;
-            submitBtn.textContent = I18n.t("tasks.flag_submit");
+            errEl.textContent=e.message||I18n.t("tasks.save_failed"); errEl.hidden=false;
+            btn.disabled=false; btn.textContent=I18n.t("tasks.flag_submit");
           }
         });
       }
     };
-    window.ShiftlyFlagModal = FlagModal;
 
     // ========== VIEWS ==========
     const Views = {
@@ -1430,91 +1262,34 @@
         const main = document.getElementById("app-main");
         const profile = App.state.profile;
         const name = escape(profile.full_name.split(" ")[0]);
-
-        // Debug bar — shows live profile state
-        const dbg = document.getElementById("debug-bar");
-        if (dbg) {
-          dbg.hidden = false;
-          document.getElementById("dbg-role").textContent = "role: " + profile.role;
-          document.getElementById("dbg-qa").textContent = "questions_access: " + profile.questions_access;
-        }
-
+        const _qCard = profile.questions_access ? `<button class="card card-clickable" data-nav="questions"><h3>${I18n.t("home.questions")}</h3><p>${I18n.t("home.questions_hint")}</p></button>` : "";
+        const _tCard = `<button class="card card-clickable" data-nav="tasks"><h3>${I18n.t("home.tasks")} <span id="home-task-badge" hidden style="display:inline-flex;align-items:center;justify-content:center;background:var(--color-danger);color:#fff;font-size:11px;font-weight:600;min-width:18px;height:18px;border-radius:9px;padding-inline:4px;margin-inline-start:6px;vertical-align:middle"></span></h3><p>${I18n.t("home.tasks_hint")}</p></button>`;
         if (profile.role === "admin") {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.admin_subtitle")}</p>
-            <button class="card card-clickable" data-nav="users">
-              <h3>${I18n.t("home.users")}</h3>
-              <p>${I18n.t("home.users_hint")}</p>
-            </button>
-            <button class="card card-clickable" data-nav="checklists">
-              <h3>${I18n.t("home.checklists")}</h3>
-              <p>${I18n.t("home.checklists_hint")}</p>
-            </button>
-            <button class="card card-clickable" data-nav="questions">
-              <h3>${I18n.t("home.questions")}</h3>
-              <p>${I18n.t("home.questions_hint")}</p>
-            </button>
-            <button class="card card-clickable" data-nav="tasks" id="home-tasks-card">
-              <h3>${I18n.t("home.tasks")} <span class="task-badge" id="home-task-badge" hidden></span></h3>
-              <p>${I18n.t("home.tasks_hint")}</p>
-            </button>
-            <button class="card card-clickable" data-nav="audit">
-              <h3>${I18n.t("home.audit_log")}</h3>
-              <p>${I18n.t("home.audit_hint")}</p>
-            </button>
+            <button class="card card-clickable" data-nav="users"><h3>${I18n.t("home.users")}</h3><p>${I18n.t("home.users_hint")}</p></button>
+            <button class="card card-clickable" data-nav="checklists"><h3>${I18n.t("home.checklists")}</h3><p>${I18n.t("home.checklists_hint")}</p></button>
+            <button class="card card-clickable" data-nav="questions"><h3>${I18n.t("home.questions")}</h3><p>${I18n.t("home.questions_hint")}</p></button>
+            ${_tCard}
+            <button class="card card-clickable" data-nav="audit"><h3>${I18n.t("home.audit_log")}</h3><p>${I18n.t("home.audit_hint")}</p></button>
           `;
-          main.querySelectorAll("[data-nav]").forEach(el =>
-            el.addEventListener("click", () => Router.go(el.dataset.nav)));
-          API.countOpenAssignedTasks().then(n => {
-            const badge = document.getElementById("home-task-badge");
-            if (badge && n > 0) { badge.textContent = n; badge.hidden = false; }
-          });
         } else if (profile.role === "manager") {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.manager_subtitle")}</p>
-            <button class="card card-clickable" data-nav="checklists">
-              <h3>${I18n.t("home.checklists")}</h3>
-              <p>${I18n.t("home.checklists_hint")}</p>
-            </button>
-            ${profile.questions_access ? `
-            <button class="card card-clickable" data-nav="questions">
-              <h3>${I18n.t("home.questions")}</h3>
-              <p>${I18n.t("home.questions_hint")}</p>
-            </button>` : ""}
-            <button class="card card-clickable" data-nav="tasks">
-              <h3>${I18n.t("home.tasks")} <span class="task-badge" id="home-task-badge" hidden></span></h3>
-              <p>${I18n.t("home.tasks_hint")}</p>
-            </button>
+            <button class="card card-clickable" data-nav="checklists"><h3>${I18n.t("home.checklists")}</h3><p>${I18n.t("home.checklists_hint")}</p></button>
+            ${_qCard}${_tCard}
           `;
-          main.querySelectorAll("[data-nav]").forEach(el =>
-            el.addEventListener("click", () => Router.go(el.dataset.nav)));
-          API.countOpenAssignedTasks().then(n => {
-            const badge = document.getElementById("home-task-badge");
-            if (badge && n > 0) { badge.textContent = n; badge.hidden = false; }
-          });
         } else {
           main.innerHTML = `
             <h1 class="page-title">${I18n.t("home.welcome")}, ${name}</h1>
             <p class="page-subtitle">${I18n.t("home.user_subtitle")}</p>
-            ${profile.questions_access ? `
-            <button class="card card-clickable" data-nav="questions">
-              <h3>${I18n.t("home.questions")}</h3>
-              <p>${I18n.t("home.questions_hint")}</p>
-            </button>` : ""}
-            <button class="card card-clickable" data-nav="tasks">
-              <h3>${I18n.t("home.tasks")} <span class="task-badge" id="home-task-badge" hidden></span></h3>
-              <p>${I18n.t("home.tasks_hint")}</p>
-            </button>
+            ${_qCard}${_tCard}
           `;
-          main.querySelectorAll("[data-nav]").forEach(el =>
-            el.addEventListener("click", () => Router.go(el.dataset.nav)));
-          API.countOpenAssignedTasks().then(n => {
-            const badge = document.getElementById("home-task-badge");
-            if (badge && n > 0) { badge.textContent = n; badge.hidden = false; }
-          });
         }
+        main.querySelectorAll("[data-nav]").forEach(el => el.addEventListener("click", () => Router.go(el.dataset.nav)));
+        API.countOpenTasks().then(n => { const b=document.getElementById("home-task-badge"); if(b&&n>0){b.textContent=n;b.hidden=false;} }).catch(()=>{});
       },
 
       async usersList() {
@@ -1556,7 +1331,7 @@
           listEl.innerHTML = filtered.map(u => {
             const mgrs = u.managers.map(m => escape(m.full_name)).join(", ");
             return `
-              <div class="user-card ${(u.active !== false) ? "" : "user-card-inactive"}" data-id="${u.id}">
+              <div class="user-card ${u.active ? "" : "user-card-inactive"}" data-id="${u.id}">
                 <div class="user-card-top">
                   <span class="user-card-name">${escape(u.full_name)}${
                     u.active ? "" : `<span class="inactive-tag">${escape(I18n.t("users.inactive"))}</span>`
@@ -1628,28 +1403,10 @@
             <div id="manager-picker"><span class="loader-inline"></span></div>
 
             ${isEdit ? `
-              <div class="section-title">${escape(I18n.t("user_form.questions_access"))}</div>
-              <div class="toggle-row">
-                <div class="toggle-row-info">
-                  <div class="toggle-row-label">${escape(I18n.t("user_form.questions_access_label"))}</div>
-                  <div class="toggle-row-hint">${escape(I18n.t("user_form.questions_access_hint"))}</div>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="f-questions-access" ${user.questions_access ? "checked" : ""}>
-                  <span class="slider"></span>
-                </label>
-              </div>
+              <div class="section-title">Questions Access</div>
+              <div class="toggle-row"><div class="toggle-row-info"><div class="toggle-row-label">${escape(I18n.t("questions.access_label"))}</div><div class="toggle-row-hint">${escape(I18n.t("questions.access_hint"))}</div></div><label class="switch"><input type="checkbox" id="f-questions-access" ${user.questions_access?"checked":""}><span class="slider"></span></label></div>
               <div class="section-title">${escape(I18n.t("user_form.status"))}</div>
-              <div class="toggle-row">
-                <div class="toggle-row-info">
-                  <div class="toggle-row-label">${escape(I18n.t("user_form.active_label"))}</div>
-                  <div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="f-active" ${(user.status ?? "active") !== "inactive" ? "checked" : ""}>
-                  <span class="slider"></span>
-                </label>
-              </div>
+              <div class="toggle-row"><div class="toggle-row-info"><div class="toggle-row-label">${escape(I18n.t("user_form.active_label"))}</div><div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div></div><label class="switch"><input type="checkbox" id="f-active" ${(String(user.status||user.active||"active").toLowerCase()!=="inactive")?"checked":""}><span class="slider"></span></label></div>
             ` : ""}
 
             <div id="form-error" class="error-message" style="text-align:center" hidden></div>
@@ -1710,12 +1467,12 @@
               const qaEl = document.getElementById("f-questions-access");
               await API.updateUser(user.id, {
                 ...formData,
-                status: (activeEl && !activeEl.checked) ? "inactive" : "active",
+                status: (activeEl && !activeEl.checked) ? "Inactive" : "Active",
                 questions_access: qaEl ? qaEl.checked : false
               }, managerIds);
             } else {
               const password = document.getElementById("f-password").value;
-              await API.createUser({ ...formData, password, manager_ids: managerIds, questions_access: false });
+              await API.createUser({ ...formData, password, manager_ids: managerIds });
             }
             Router.go("users");
           } catch (err) {
@@ -1724,61 +1481,6 @@
             saveBtn.disabled = false;
             saveBtn.textContent = I18n.t("user_form.save");
           }
-        });
-      },
-
-      async checklistDo(checklistId) {
-        const main = document.getElementById("app-main");
-        main.innerHTML = `<div style="text-align:center;padding:var(--space-12)"><span class="loader-inline"></span></div>`;
-        let result;
-        try { result = await API.getChecklist(checklistId); }
-        catch(e) { main.innerHTML = `<div class="error-message">${escape(e.message)}</div>`; return; }
-
-        const { checklist, items } = result;
-        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
-        const name = localized(checklist.name);
-
-        // Check pending tasks for each item
-        const pendingChecks = await Promise.all(
-          items.map(it => it.question_id ? API.hasPendingFlagTask(it.id) : Promise.resolve(false))
-        );
-
-        main.innerHTML = `
-          <h1 class="page-title">${escape(name)}</h1>
-          <p class="page-subtitle">${escape(localized(checklist.description || ""))}</p>
-          <div id="do-items"></div>
-        `;
-        const doEl = document.getElementById("do-items");
-        doEl.innerHTML = items.map((it, idx) => {
-          const hasPending = pendingChecks[idx];
-          const hasQ = !!it.question_id;
-          return `
-            <div class="task-row" data-item-id="${it.id}" data-question-id="${it.question_id || ""}" data-checklist-name="${escape(name)}" data-item-label="${escape(localized(it.label))}">
-              <div class="task-body">
-                <span class="task-title">${idx + 1}. ${escape(localized(it.label))}</span>
-              </div>
-              ${hasQ ? `<button class="flag-btn ${hasPending ? "flag-btn-disabled" : ""}" data-idx="${idx}" ${hasPending ? "disabled title='" + escape(I18n.t("tasks.flag_already_open")) + "'" : ""}>
-                🚩 ${hasPending ? escape(I18n.t("tasks.flag_already_open")) : "Flag"}
-              </button>` : ""}
-            </div>
-          `;
-        }).join("") || `<div class="empty-state"><p>${escape(I18n.t("checklist_form.no_items"))}</p></div>`;
-
-        doEl.querySelectorAll(".flag-btn:not([disabled])").forEach(btn => {
-          btn.addEventListener("click", async () => {
-            const row = btn.closest(".task-row");
-            await FlagModal.show({
-              checklistItemId: row.dataset.itemId,
-              checklistName: row.dataset.checklistName,
-              itemLabel: row.dataset.itemLabel,
-              questionId: row.dataset.questionId,
-              onSuccess: () => {
-                btn.disabled = true;
-                btn.classList.add("flag-btn-disabled");
-                btn.textContent = "🚩 " + I18n.t("tasks.flag_already_open");
-              }
-            });
-          });
         });
       },
 
@@ -1807,7 +1509,7 @@
 
         const listEl = document.getElementById("cl-list");
         const searchEl = document.getElementById("cl-search");
-        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
+        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
         const formatSchedule = (days, time) => {
           let label;
           if (!days || days.length === 0) label = I18n.t("checklists.no_days");
@@ -1843,17 +1545,11 @@
               </div>
             </div>
           `).join("");
-          listEl.querySelectorAll(".checklist-card").forEach(el => {
+          listEl.querySelectorAll(".checklist-card").forEach(el =>
             el.addEventListener("click", () => {
-              const profile = App.state.profile;
-              const canEdit = profile.role === "admin" || profile.questions_access;
-              if (canEdit) {
-                Router.go("checklist-form", { id: el.dataset.id });
-              } else {
-                Router.go("checklist-do", { id: el.dataset.id });
-              }
-            });
-          });
+              const p = App.state.profile;
+              Router.go((p.role==="admin"||p.questions_access) ? "checklist-form" : "checklist-do", { id: el.dataset.id });
+            }));
         }
         searchEl.addEventListener("input", render);
         render();
@@ -1877,7 +1573,7 @@
           }
         }
 
-        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
+        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
         const days = existing?.active_days || [0,1,2,3,4,5,6];
         const targetTime = existing?.target_time ? existing.target_time.slice(0,5) : "";
         const dayNames = I18n.t("checklists.days_short");
@@ -1959,9 +1655,9 @@
           chip.addEventListener("click", () => chip.classList.toggle("active"));
         });
 
-        // Load questions for item linking
+        // Load questions for linking
         let allQuestions = [];
-        try { allQuestions = await API.listQuestions(); } catch(e) { /* non-fatal */ }
+        try { allQuestions = await API.listQuestions(); } catch(e) {}
 
         // Items management
         const itemsEl = document.getElementById("cl-items");
@@ -1979,8 +1675,6 @@
           if (placeholder) placeholder.remove();
           const div = document.createElement("div");
           div.className = "item-row";
-          const qOptions = `<option value="">${escape(I18n.t("checklist_form.no_question"))}</option>` +
-            allQuestions.map(q => `<option value="${q.id}" ${item?.question_id === q.id ? "selected" : ""}>${escape(q.label)}</option>`).join("");
           div.innerHTML = `
             <div class="item-row-header">
               <span class="item-position">${itemsEl.children.length + 1}.</span>
@@ -2002,10 +1696,12 @@
                 <input type="checkbox" class="item-comment" ${item?.requires_comment ? "checked" : ""}>
                 <span>${escape(I18n.t("checklist_form.requires_comment"))}</span>
               </label>
-              <div class="item-question-wrap">
-                <div class="item-question-label">${escape(I18n.t("checklist_form.linked_question"))}</div>
-                <select class="item-question-select">${qOptions}</select>
-                <div class="field-hint">${escape(I18n.t("checklist_form.linked_question_hint"))}</div>
+              <div style="margin-top:4px">
+                <div style="font-size:12px;font-weight:500;color:var(--color-text-muted);margin-bottom:4px">${escape(I18n.t("checklist_form.linked_question"))}</div>
+                <select class="item-question-select" style="width:100%;padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-bg);font-size:13px;appearance:none;font-family:inherit">
+                  <option value="">${escape(I18n.t("checklist_form.no_question"))}</option>
+                  ${allQuestions.map(q=>`<option value="${q.id}" ${item?.question_id===q.id?"selected":""}>${escape(q.label)}</option>`).join("")}
+                </select>
               </div>
             </div>
           `;
@@ -2129,268 +1825,159 @@
         });
       },
 
-      async questionsList() {
-        const main = document.getElementById("app-main");
-        main.innerHTML = `
-          <h1 class="page-title">${I18n.t("questions.title")}</h1>
-          <p class="page-subtitle">${I18n.t("questions.subtitle")}</p>
-          <div class="toolbar">
-            <input type="text" class="search-input" id="q-search"
-                   placeholder="${escape(I18n.t("questions.search_placeholder"))}">
-            <button class="btn btn-primary" id="new-q-btn">+ ${escape(I18n.t("questions.new_question"))}</button>
+      async tasksList() {
+        const main=document.getElementById("app-main");
+        main.innerHTML=`<h1 class="page-title">${I18n.t("tasks.title")}</h1><p class="page-subtitle">${I18n.t("tasks.subtitle")}</p>
+          <div style="display:flex;gap:8px;margin-block-end:16px"><input type="text" id="task-input" style="flex:1;min-width:0;padding:12px 16px;border:1px solid var(--color-border);border-radius:10px;background:var(--color-surface);font-size:15px;font-family:inherit" placeholder="${escape(I18n.t("tasks.placeholder"))}" maxlength="200" autocomplete="off">
+          <button id="task-add-btn" class="btn btn-primary" style="flex-shrink:0;font-size:22px;padding-inline:20px">+</button></div>
+          <div id="task-error" class="error-message" hidden style="margin-block-end:16px"></div>
+          <div style="display:flex;gap:8px;margin-block-end:16px" id="task-filters">
+            <button class="task-filter-btn active" data-filter="all">${I18n.t("tasks.filter_all")}</button>
+            <button class="task-filter-btn" data-filter="open">${I18n.t("tasks.filter_open")}</button>
+            <button class="task-filter-btn" data-filter="done">${I18n.t("tasks.filter_done")}</button>
           </div>
-          <div id="q-list"><span class="loader-inline"></span></div>
-        `;
-        document.getElementById("new-q-btn").addEventListener("click",
-          () => Router.go("question-form", { id: null }));
-
-        let questions = [];
-        try { questions = await API.listQuestions(); }
-        catch (e) {
-          document.getElementById("q-list").innerHTML =
-            `<div class="error-message">${escape(e.message)}</div>`;
-          return;
-        }
-
-        const listEl = document.getElementById("q-list");
-        const searchEl = document.getElementById("q-search");
-        let allUsers = [];
-        try { allUsers = await API.listUsers(); } catch(e) {}
-        const usersById = Object.fromEntries(allUsers.map(u => [u.id, u]));
-
+          <div id="tasks-list"><span class="loader-inline"></span></div>`;
+        let tasks=[], filter="all";
+        const listEl=document.getElementById("tasks-list"),errEl=document.getElementById("task-error"),
+              inputEl=document.getElementById("task-input"),addBtn=document.getElementById("task-add-btn");
         function render() {
-          const q = searchEl.value.trim().toLowerCase();
-          const filtered = !q ? questions : questions.filter(qn =>
-            qn.label.toLowerCase().includes(q));
-          if (filtered.length === 0) {
-            listEl.innerHTML = `<div class="empty-state"><p>${
-              q ? I18n.t("questions.empty_search") : I18n.t("questions.empty")
-            }</p></div>`;
-            return;
-          }
-          listEl.innerHTML = filtered.map(qn => {
-            const handler = usersById[qn.assignee_id];
-            return `
-              <div class="question-card" data-id="${qn.id}">
-                <div class="question-card-top">
-                  <span class="question-card-label">${escape(qn.label)}</span>
-                </div>
-                <div class="question-card-meta">
-                  <span>${(qn.options || []).length} ${escape(I18n.t("questions.options_count"))}</span>
-                  ${handler ? `<span>\u2192 ${escape(handler.full_name)}</span>` : ""}
-                </div>
-              </div>
-            `;
-          }).join("");
-          listEl.querySelectorAll(".question-card").forEach(el =>
-            el.addEventListener("click", () => Router.go("question-form", { id: el.dataset.id })));
+          const vis=tasks.filter(t=>filter==="all"?true:filter==="done"?t.done:!t.done);
+          if (!vis.length){listEl.innerHTML=`<div class="empty-state"><p>${escape(I18n.t("tasks.empty"))}</p></div>`;return;}
+          listEl.innerHTML=vis.map(t=>`<div class="task-row ${t.done?"task-row-done":""}" data-id="${t.id}">
+            <label class="task-check-wrap"><input type="checkbox" class="task-check" ${t.done?"checked":""}><span class="task-check-box"></span></label>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:15px;word-break:break-word${t.done?";text-decoration:line-through;color:var(--color-text-muted)":""}">${escape(t.title)}</div>
+              ${t.source==="auto"?`<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-warning-text);background:var(--color-warning-soft);padding:1px 6px;border-radius:4px">Auto-assigned</span>`:""}
+            </div>
+            <button class="task-delete" title="${escape(I18n.t("tasks.delete_confirm"))}"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/></svg></button>
+          </div>`).join("");
+          listEl.querySelectorAll(".task-check").forEach(cb=>{
+            cb.addEventListener("change",async()=>{
+              const t=tasks.find(x=>x.id===cb.closest(".task-row").dataset.id);if(!t)return;
+              t.done=cb.checked;cb.closest(".task-row").classList.toggle("task-row-done",t.done);
+              try{await API.toggleTask(t.id,t.done);}catch(e){t.done=!t.done;render();}
+            });
+          });
+          listEl.querySelectorAll(".task-delete").forEach(btn=>{
+            btn.addEventListener("click",async()=>{
+              if(!confirm(I18n.t("tasks.delete_confirm")))return;
+              const id=btn.closest(".task-row").dataset.id;btn.closest(".task-row").style.opacity="0.4";
+              try{await API.deleteTask(id);tasks=tasks.filter(t=>t.id!==id);render();}
+              catch(e){btn.closest(".task-row").style.opacity="";errEl.textContent=e.message;errEl.hidden=false;}
+            });
+          });
         }
-        searchEl.addEventListener("input", render);
+        try{tasks=await API.listTasks();}catch(e){listEl.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
         render();
+        document.getElementById("task-filters").querySelectorAll(".task-filter-btn").forEach(btn=>{
+          btn.addEventListener("click",()=>{filter=btn.dataset.filter;document.querySelectorAll(".task-filter-btn").forEach(b=>b.classList.toggle("active",b===btn));render();});
+        });
+        async function addTask(){
+          const title=inputEl.value.trim();if(!title)return;
+          errEl.hidden=true;addBtn.disabled=true;
+          try{const t=await API.createTask(title);tasks.unshift(t);inputEl.value="";render();}
+          catch(e){errEl.textContent=I18n.t("tasks.save_failed");errEl.hidden=false;}
+          finally{addBtn.disabled=false;inputEl.focus();}
+        }
+        addBtn.addEventListener("click",addTask);
+        inputEl.addEventListener("keydown",e=>{if(e.key==="Enter")addTask();});
+      },
+
+      async questionsList() {
+        const main=document.getElementById("app-main");
+        main.innerHTML=`<h1 class="page-title">${I18n.t("questions.title")}</h1><p class="page-subtitle">${I18n.t("questions.subtitle")}</p>
+          <div class="toolbar"><input type="text" class="search-input" id="q-search" placeholder="${escape(I18n.t("questions.search_placeholder"))}">
+          <button class="btn btn-primary" id="new-q-btn">+ ${escape(I18n.t("questions.new_question"))}</button></div>
+          <div id="q-list"><span class="loader-inline"></span></div>`;
+        document.getElementById("new-q-btn").addEventListener("click",()=>Router.go("question-form",{id:null}));
+        let questions=[],allUsers=[];
+        try{questions=await API.listQuestions();}catch(e){document.getElementById("q-list").innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
+        try{allUsers=await API.listUsers();}catch(e){}
+        const usersById=Object.fromEntries(allUsers.map(u=>[u.id,u]));
+        const listEl=document.getElementById("q-list"),searchEl=document.getElementById("q-search");
+        function render(){
+          const q=searchEl.value.trim().toLowerCase();
+          const filtered=!q?questions:questions.filter(qn=>qn.label.toLowerCase().includes(q));
+          if(!filtered.length){listEl.innerHTML=`<div class="empty-state"><p>${escape(q?I18n.t("questions.empty_search"):I18n.t("questions.empty"))}</p></div>`;return;}
+          listEl.innerHTML=filtered.map(qn=>{const h=usersById[qn.assignee_id];
+            return `<div class="checklist-card" data-id="${qn.id}" style="cursor:pointer">
+              <div class="checklist-card-top"><span class="checklist-card-name">${escape(qn.label)}</span></div>
+              <div class="checklist-card-meta"><span>${(qn.options||[]).length} ${escape(I18n.t("questions.options_count"))}</span>${h?`<span>→ ${escape(h.full_name)}</span>`:""}</div>
+            </div>`;}).join("");
+          listEl.querySelectorAll(".checklist-card").forEach(el=>el.addEventListener("click",()=>Router.go("question-form",{id:el.dataset.id})));
+        }
+        searchEl.addEventListener("input",render);render();
       },
 
       async questionForm(questionId) {
-        const isEdit = !!questionId;
-        const main = document.getElementById("app-main");
-        let existing = null;
-        if (isEdit) {
-          try { existing = await API.getQuestion(questionId); }
-          catch (e) { main.innerHTML = `<div class="error-message">${escape(e.message)}</div>`; return; }
-        }
-
-        let allUsers = [];
-        try { allUsers = await API.listUsers(); } catch(e) {}
-
-        main.innerHTML = `
-          <h1 class="page-title">${isEdit ? I18n.t("questions.edit_title") : I18n.t("questions.new_title")}</h1>
+        const isEdit=!!questionId,main=document.getElementById("app-main");
+        let existing=null;
+        if(isEdit){try{existing=await API.getQuestion(questionId);}catch(e){main.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}}
+        let allUsers=[];try{allUsers=await API.listUsers();}catch(e){}
+        main.innerHTML=`<h1 class="page-title">${isEdit?I18n.t("questions.edit_title"):I18n.t("questions.new_title")}</h1>
           <form id="q-form" class="form" novalidate>
-            <div class="field">
-              <label>${escape(I18n.t("questions.question_label"))}</label>
-              <input type="text" id="q-label" required
-                placeholder="${escape(I18n.t("questions.question_placeholder"))}"
-                value="${escape(existing?.label || "")}">
-            </div>
-            <div class="field">
-              <label>${escape(I18n.t("questions.options_label"))}</label>
-              <textarea id="q-options" rows="5"
-                placeholder="${escape(I18n.t("questions.options_placeholder"))}"
-                style="resize:vertical">${escape((existing?.options || []).join("\n"))}</textarea>
-              <div class="field-hint">${escape(I18n.t("questions.options_hint"))}</div>
-            </div>
-            <div class="field">
-              <label>${escape(I18n.t("questions.assignee_label"))}</label>
-              <div class="field-hint" style="margin-block-end:var(--space-2)">${escape(I18n.t("questions.assignee_hint"))}</div>
-              ${allUsers.length === 0
-                ? `<div class="picker-empty">${escape(I18n.t("questions.no_assignee"))}</div>`
-                : `<div class="picker-list">
-                    ${allUsers.map(u => `
-                      <label class="picker-item">
-                        <input type="radio" name="q-assignee" value="${u.id}" ${existing?.assignee_id === u.id ? "checked" : ""}>
-                        <div class="picker-item-text">
-                          <div class="picker-item-name">${escape(u.full_name)}</div>
-                          <div class="picker-item-meta">${escape(I18n.t("role." + u.role))}${u.department ? " · " + escape(u.department) : ""}</div>
-                        </div>
-                      </label>`).join("")}
-                  </div>`
-              }
+            <div class="field"><label>${escape(I18n.t("questions.question_label"))}</label>
+              <input type="text" id="q-label" required placeholder="${escape(I18n.t("questions.question_placeholder"))}" value="${escape(existing?.label||"")}"></div>
+            <div class="field"><label>${escape(I18n.t("questions.options_label"))}</label>
+              <textarea id="q-options" rows="5" placeholder="Option A, Option B, Option C" style="resize:vertical">${escape((existing?.options||[]).join("\n"))}</textarea>
+              <div class="field-hint">${escape(I18n.t("questions.options_hint"))}</div></div>
+            <div class="field"><label>${escape(I18n.t("questions.assignee_label"))}</label>
+              <div class="field-hint" style="margin-block-end:8px">${escape(I18n.t("questions.assignee_hint"))}</div>
+              ${!allUsers.length?`<div class="picker-empty">${escape(I18n.t("questions.no_assignee"))}</div>`:`<div class="picker-list">${allUsers.map(u=>`<label class="picker-item"><input type="radio" name="q-assignee" value="${u.id}" ${existing?.assignee_id===u.id?"checked":""}><div class="picker-item-text"><div class="picker-item-name">${escape(u.full_name)}</div><div class="picker-item-meta">${escape(I18n.t("role."+u.role))}${u.department?" · "+escape(u.department):""}</div></div></label>`).join("")}</div>`}
             </div>
             <div id="q-error" class="error-message" hidden></div>
             <div class="form-actions">
               <button type="button" class="btn btn-secondary" id="q-cancel">${escape(I18n.t("questions.cancel"))}</button>
               <button type="submit" class="btn btn-primary" id="q-save">${escape(I18n.t("questions.save"))}</button>
-            </div>
-          </form>
-        `;
-
-        document.getElementById("q-cancel").addEventListener("click", () => Router.go("questions"));
-        document.getElementById("q-form").addEventListener("submit", async (e) => {
+            </div></form>`;
+        document.getElementById("q-cancel").addEventListener("click",()=>Router.go("questions"));
+        document.getElementById("q-form").addEventListener("submit",async(e)=>{
           e.preventDefault();
-          const errBox = document.getElementById("q-error");
-          const saveBtn = document.getElementById("q-save");
-          errBox.hidden = true;
-
-          const label = document.getElementById("q-label").value.trim();
-          const options = document.getElementById("q-options").value
-            .split("\n").map(s => s.trim()).filter(Boolean);
-          const assigneeEl = document.querySelector("[name='q-assignee']:checked");
-          const assigneeId = assigneeEl?.value || null;
-
-          if (!label) { errBox.textContent = I18n.t("questions.needs_label"); errBox.hidden = false; return; }
-          if (options.length < 2) { errBox.textContent = I18n.t("questions.needs_options"); errBox.hidden = false; return; }
-          if (!assigneeId) { errBox.textContent = I18n.t("questions.needs_assignee"); errBox.hidden = false; return; }
-
-          saveBtn.disabled = true; saveBtn.textContent = I18n.t("app.saving");
-          try {
-            await API.saveQuestion({ label, options, assignee_id: assigneeId }, questionId);
-            Router.go("questions");
-          } catch (err) {
-            errBox.textContent = err.message || I18n.t("questions.save_failed");
-            errBox.hidden = false;
-            saveBtn.disabled = false; saveBtn.textContent = I18n.t("questions.save");
-          }
+          const errBox=document.getElementById("q-error"),saveBtn=document.getElementById("q-save");
+          errBox.hidden=true;
+          const label=document.getElementById("q-label").value.trim();
+          const options=document.getElementById("q-options").value.split("\n").map(s=>s.trim()).filter(Boolean);
+          const assigneeId=document.querySelector("[name='q-assignee']:checked")?.value||null;
+          if(!label){errBox.textContent=I18n.t("questions.needs_label");errBox.hidden=false;return;}
+          if(options.length<2){errBox.textContent=I18n.t("questions.needs_options");errBox.hidden=false;return;}
+          if(!assigneeId){errBox.textContent=I18n.t("questions.needs_assignee");errBox.hidden=false;return;}
+          saveBtn.disabled=true;saveBtn.textContent=I18n.t("app.saving");
+          try{await API.saveQuestion({label,options,assignee_id:assigneeId},questionId);Router.go("questions");}
+          catch(err){errBox.textContent=err.message||I18n.t("questions.save_failed");errBox.hidden=false;saveBtn.disabled=false;saveBtn.textContent=I18n.t("questions.save");}
         });
       },
 
-      async tasksList() {
-        const main = document.getElementById("app-main");
-        main.innerHTML = `
-          <h1 class="page-title">${I18n.t("tasks.title")}</h1>
-          <p class="page-subtitle">${I18n.t("tasks.subtitle")}</p>
-          <div class="task-compose">
-            <input type="text" id="task-input" class="task-input"
-              placeholder="${escape(I18n.t("tasks.placeholder"))}" maxlength="200" autocomplete="off">
-            <button id="task-add-btn" class="btn btn-primary task-add-btn">+</button>
-          </div>
-          <div id="task-error" class="error-message" hidden style="margin-block-end: var(--space-4)"></div>
-          <div class="task-filter-bar" id="task-filter-bar">
-            <button class="task-filter-btn active" data-filter="all">${I18n.t("tasks.filter_all")}</button>
-            <button class="task-filter-btn" data-filter="open">${I18n.t("tasks.filter_open")}</button>
-            <button class="task-filter-btn" data-filter="done">${I18n.t("tasks.filter_done")}</button>
-          </div>
-          <div id="tasks-list"><span class="loader-inline"></span></div>
-        `;
-
-        let tasks = [];
-        let filter = "all";
-        const listEl = document.getElementById("tasks-list");
-        const errEl = document.getElementById("task-error");
-        const inputEl = document.getElementById("task-input");
-        const addBtn = document.getElementById("task-add-btn");
-
-        function render() {
-          const visible = tasks.filter(t =>
-            filter === "all" ? true : filter === "done" ? t.done : !t.done
-          );
-          if (visible.length === 0) {
-            listEl.innerHTML = `<div class="empty-state"><p>${escape(I18n.t("tasks.empty"))}</p></div>`;
-            return;
-          }
-          listEl.innerHTML = visible.map(t => `
-            <div class="task-row ${t.done ? "task-row-done" : ""}" data-id="${t.id}">
-              <label class="task-check-wrap">
-                <input type="checkbox" class="task-check" ${t.done ? "checked" : ""}>
-                <span class="task-check-box"></span>
-              </label>
-              <div class="task-body">
-                <span class="task-title">${escape(t.title)}</span>
-                ${t.source === "auto" ? `<span class="task-source-badge">${escape(I18n.t("tasks.auto_label"))}</span>` : ""}
-              </div>
-              <button class="task-delete" title="${escape(I18n.t("tasks.delete_confirm"))}">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <line x1="1" y1="1" x2="13" y2="13"/><line x1="13" y1="1" x2="1" y2="13"/>
-                </svg>
-              </button>
-            </div>
-          `).join("");
-
-          listEl.querySelectorAll(".task-check").forEach(cb => {
-            cb.addEventListener("change", async () => {
-              const id = cb.closest(".task-row").dataset.id;
-              const task = tasks.find(t => t.id === id);
-              if (!task) return;
-              task.done = cb.checked;
-              cb.closest(".task-row").classList.toggle("task-row-done", task.done);
-              try { await API.toggleTask(id, task.done); }
-              catch (e) { task.done = !task.done; render(); }
+      async checklistDo(checklistId) {
+        const main=document.getElementById("app-main");
+        main.innerHTML=`<div style="text-align:center;padding:48px"><span class="loader-inline"></span></div>`;
+        let result;
+        try{result=await API.getChecklistWithItems(checklistId);}
+        catch(e){main.innerHTML=`<div class="error-message">${escape(e.message)}</div>`;return;}
+        const {checklist,items}=result;
+        const loc=j=>typeof j==="string"?j:(j?.en||Object.values(j||{})[0]||"");
+        const name=loc(checklist.name);
+        const pendingChecks=await Promise.all(items.map(it=>it.question_id?API.hasPendingFlagTask(it.id):Promise.resolve(false)));
+        main.innerHTML=`<h1 class="page-title">${escape(name)}</h1><p class="page-subtitle">${escape(loc(checklist.description||""))}</p><div id="do-items"></div>`;
+        const doEl=document.getElementById("do-items");
+        doEl.innerHTML=items.map((it,idx)=>{
+          const hp=pendingChecks[idx];
+          return `<div class="task-row" data-item-id="${it.id}" data-question-id="${it.question_id||""}" data-checklist-name="${escape(name)}" data-item-label="${escape(loc(it.label))}">
+            <div style="flex:1;font-size:15px">${idx+1}. ${escape(loc(it.label))}</div>
+            ${it.question_id?`<button class="flag-btn${hp?" flag-btn-disabled":""}" ${hp?`disabled title="${escape(I18n.t("tasks.flag_already_open"))}"`:""}>
+              &#128681; ${hp?escape(I18n.t("tasks.flag_already_open")):"Flag"}
+            </button>`:""}
+          </div>`;
+        }).join("")||`<div class="empty-state"><p>No items.</p></div>`;
+        doEl.querySelectorAll(".flag-btn:not([disabled])").forEach(btn=>{
+          btn.addEventListener("click",async()=>{
+            const row=btn.closest(".task-row");
+            await FlagModal.show({
+              checklistItemId:row.dataset.itemId,checklistName:row.dataset.checklistName,
+              itemLabel:row.dataset.itemLabel,questionId:row.dataset.questionId,
+              onSuccess:()=>{btn.disabled=true;btn.classList.add("flag-btn-disabled");btn.innerHTML="&#128681; "+I18n.t("tasks.flag_already_open");}
             });
-          });
-
-          listEl.querySelectorAll(".task-delete").forEach(btn => {
-            btn.addEventListener("click", async () => {
-              if (!confirm(I18n.t("tasks.delete_confirm"))) return;
-              const id = btn.closest(".task-row").dataset.id;
-              btn.closest(".task-row").style.opacity = "0.4";
-              try {
-                await API.deleteTask(id);
-                tasks = tasks.filter(t => t.id !== id);
-                render();
-              } catch (e) {
-                btn.closest(".task-row").style.opacity = "";
-                errEl.textContent = e.message; errEl.hidden = false;
-              }
-            });
-          });
-        }
-
-        // Load tasks
-        try {
-          tasks = await API.listTasks();
-        } catch (e) {
-          listEl.innerHTML = `<div class="error-message">${escape(e.message)}</div>`;
-          return;
-        }
-        render();
-
-        // Filter buttons
-        document.getElementById("task-filter-bar").querySelectorAll(".task-filter-btn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            filter = btn.dataset.filter;
-            document.querySelectorAll(".task-filter-btn").forEach(b => b.classList.toggle("active", b === btn));
-            render();
           });
         });
-
-        // Add task
-        async function addTask() {
-          const title = inputEl.value.trim();
-          if (!title) return;
-          errEl.hidden = true;
-          addBtn.disabled = true;
-          try {
-            const newTask = await API.createTask(title);
-            tasks.unshift(newTask);
-            inputEl.value = "";
-            render();
-          } catch (e) {
-            errEl.textContent = I18n.t("tasks.save_failed");
-            errEl.hidden = false;
-          } finally {
-            addBtn.disabled = false;
-            inputEl.focus();
-          }
-        }
-        addBtn.addEventListener("click", addTask);
-        inputEl.addEventListener("keydown", e => { if (e.key === "Enter") addTask(); });
       },
 
       auditStub() {
@@ -2423,6 +2010,9 @@
               document.getElementById("password").value
             );
             App.state.profile = profile;
+            if (profile.preferred_language && profile.preferred_language !== I18n.getLang()) {
+              I18n.setLang(profile.preferred_language);
+            }
             Router.go("home");
           } catch (err) {
             errBox.textContent = err.message || I18n.t("login.error_generic");
@@ -2437,6 +2027,9 @@
         const profile = await Auth.getCurrentProfile();
         if (profile) {
           App.state.profile = profile;
+          if (profile.preferred_language && profile.preferred_language !== I18n.getLang()) {
+            I18n.setLang(profile.preferred_language);
+          }
           Router.go("home");
         } else {
           Router.go("login");

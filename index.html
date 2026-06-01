@@ -976,34 +976,39 @@
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
 
-        // Try with all columns first
+        // Use actual profiles schema: status (not active), questions_access
         let profile, error;
         ({ data: profile, error } = await sb.from("profiles")
-          .select("id, full_name, email, role, active, questions_access")
+          .select("id, full_name, email, role, status, questions_access, department, job_title, phone")
           .eq("id", session.user.id).single());
 
-        // If that failed (column missing), try without questions_access
+        // Fallback without optional columns
         if (error) {
           ({ data: profile, error } = await sb.from("profiles")
-            .select("id, full_name, email, role, active")
+            .select("id, full_name, email, role, status")
             .eq("id", session.user.id).single());
         }
 
-        // If still failed, try bare minimum
+        // Bare minimum
         if (error) {
           ({ data: profile, error } = await sb.from("profiles")
             .select("id, full_name, email, role")
             .eq("id", session.user.id).single());
         }
 
-        // No profile at all — not signed up
         if (error || !profile) {
           await sb.auth.signOut();
           return null;
         }
 
-        // Default missing fields safely — never block login due to missing columns
-        profile.active = profile.active ?? true;
+        // Map status → active for app logic (inactive = blocked)
+        const statusVal = profile.status ?? "active";
+        if (statusVal === "inactive") {
+          await sb.auth.signOut();
+          return null;
+        }
+
+        profile.active = true;
         profile.questions_access = profile.questions_access ?? false;
         return profile;
       }
@@ -1029,15 +1034,19 @@
       async listUsers() {
         let users, error;
         ({ data: users, error } = await sb.from("profiles")
-          .select("id, full_name, email, role, department, job_title, phone, active, questions_access")
+          .select("id, full_name, email, role, department, job_title, phone, status, questions_access")
           .order("full_name"));
         if (error) {
           ({ data: users, error } = await sb.from("profiles")
-            .select("id, full_name, email, role, department, job_title, phone, active")
+            .select("id, full_name, email, role, department, job_title, phone, status")
             .order("full_name"));
         }
         if (error) throw error;
-        users = (users || []).map(u => ({ ...u, questions_access: u.questions_access ?? false }));
+        users = (users || []).map(u => ({
+          ...u,
+          active: (u.status ?? "active") !== "inactive",
+          questions_access: u.questions_access ?? false
+        }));
         const { data: links, error: lErr } = await sb.from("user_managers")
           .select("user_id, manager_id");
         if (lErr) throw lErr;
@@ -1544,7 +1553,7 @@
           listEl.innerHTML = filtered.map(u => {
             const mgrs = u.managers.map(m => escape(m.full_name)).join(", ");
             return `
-              <div class="user-card ${u.active ? "" : "user-card-inactive"}" data-id="${u.id}">
+              <div class="user-card ${(u.active !== false) ? "" : "user-card-inactive"}" data-id="${u.id}">
                 <div class="user-card-top">
                   <span class="user-card-name">${escape(u.full_name)}${
                     u.active ? "" : `<span class="inactive-tag">${escape(I18n.t("users.inactive"))}</span>`
@@ -1634,7 +1643,7 @@
                   <div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div>
                 </div>
                 <label class="switch">
-                  <input type="checkbox" id="f-active" ${user.active ? "checked" : ""}>
+                  <input type="checkbox" id="f-active" ${(user.status ?? "active") !== "inactive" ? "checked" : ""}>
                   <span class="slider"></span>
                 </label>
               </div>
@@ -1698,7 +1707,7 @@
               const qaEl = document.getElementById("f-questions-access");
               await API.updateUser(user.id, {
                 ...formData,
-                active: activeEl ? activeEl.checked : true,
+                status: (activeEl && !activeEl.checked) ? "inactive" : "active",
                 questions_access: qaEl ? qaEl.checked : false
               }, managerIds);
             } else {

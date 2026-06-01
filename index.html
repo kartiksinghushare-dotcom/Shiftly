@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#FBFAF7">
-  <title>Shiftly v3</title>
+  <title>Shiftly</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -976,40 +976,40 @@
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
 
-        // Use actual profiles schema: status (not active), questions_access
+        // Fetch all columns and let us figure out the schema
         let profile, error;
         ({ data: profile, error } = await sb.from("profiles")
-          .select("id, full_name, email, role, status, questions_access, department, job_title, phone")
+          .select("*")
           .eq("id", session.user.id).single());
-
-        // Fallback without optional columns
-        if (error) {
-          ({ data: profile, error } = await sb.from("profiles")
-            .select("id, full_name, email, role, status")
-            .eq("id", session.user.id).single());
-        }
-
-        // Bare minimum
-        if (error) {
-          ({ data: profile, error } = await sb.from("profiles")
-            .select("id, full_name, email, role")
-            .eq("id", session.user.id).single());
-        }
 
         if (error || !profile) {
           await sb.auth.signOut();
           return null;
         }
 
-        // Map status → active for app logic (inactive = blocked)
-        const statusVal = profile.status ?? "active";
-        if (statusVal === "inactive") {
+        // Normalize name — try common column names
+        if (!profile.full_name) {
+          profile.full_name =
+            profile.name ||
+            profile.display_name ||
+            profile.username ||
+            ((profile.first_name || "") + " " + (profile.last_name || "")).trim() ||
+            profile.email ||
+            "User";
+        }
+
+        // Normalize role
+        profile.role = (profile.role || "user").toLowerCase();
+
+        // Normalize active — support both boolean and string status
+        const statusVal = String(profile.status || profile.active || "active").toLowerCase();
+        if (statusVal === "inactive" || statusVal === "false") {
           await sb.auth.signOut();
           return null;
         }
-
         profile.active = true;
         profile.questions_access = profile.questions_access ?? false;
+
         return profile;
       }
       async function login(email, password) {
@@ -1034,19 +1034,22 @@
       async listUsers() {
         let users, error;
         ({ data: users, error } = await sb.from("profiles")
-          .select("id, full_name, email, role, department, job_title, phone, status, questions_access")
-          .order("full_name"));
-        if (error) {
-          ({ data: users, error } = await sb.from("profiles")
-            .select("id, full_name, email, role, department, job_title, phone, status")
-            .order("full_name"));
-        }
+          .select("*")
+          .order("full_name", { nullsFirst: false }));
         if (error) throw error;
-        users = (users || []).map(u => ({
-          ...u,
-          active: (u.status ?? "active") !== "inactive",
-          questions_access: u.questions_access ?? false
-        }));
+        users = (users || []).map(u => {
+          if (!u.full_name) {
+            u.full_name =
+              u.name || u.display_name || u.username ||
+              ((u.first_name || "") + " " + (u.last_name || "")).trim() ||
+              u.email || "User";
+          }
+          u.role = (u.role || "user").toLowerCase();
+          const sv = String(u.status || u.active || "active").toLowerCase();
+          u.active = sv !== "inactive" && sv !== "false";
+          u.questions_access = u.questions_access ?? false;
+          return u;
+        });
         const { data: links, error: lErr } = await sb.from("user_managers")
           .select("user_id, manager_id");
         if (lErr) throw lErr;

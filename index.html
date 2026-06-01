@@ -962,13 +962,22 @@
       async function getCurrentProfile() {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) return null;
-        const { data: profile, error } = await sb.from("profiles")
+        // Try with questions_access first, fall back to base columns if column missing
+        let profile, error;
+        ({ data: profile, error } = await sb.from("profiles")
           .select("id, full_name, email, role, active, questions_access")
-          .eq("id", session.user.id).single();
+          .eq("id", session.user.id).single());
+        if (error) {
+          // Fallback: column may not exist yet — try without it
+          ({ data: profile, error } = await sb.from("profiles")
+            .select("id, full_name, email, role, active")
+            .eq("id", session.user.id).single());
+        }
         if (error || !profile || !profile.active) {
           await sb.auth.signOut();
           return null;
         }
+        profile.questions_access = profile.questions_access ?? false;
         return profile;
       }
       async function login(email, password) {
@@ -991,10 +1000,17 @@
     // ========== API ==========
     const API = {
       async listUsers() {
-        const { data: users, error } = await sb.from("profiles")
+        let users, error;
+        ({ data: users, error } = await sb.from("profiles")
           .select("id, full_name, email, role, department, job_title, phone, active, questions_access")
-          .order("full_name");
+          .order("full_name"));
+        if (error) {
+          ({ data: users, error } = await sb.from("profiles")
+            .select("id, full_name, email, role, department, job_title, phone, active")
+            .order("full_name"));
+        }
         if (error) throw error;
+        users = (users || []).map(u => ({ ...u, questions_access: u.questions_access ?? false }));
         const { data: links, error: lErr } = await sb.from("user_managers")
           .select("user_id, manager_id");
         if (lErr) throw lErr;
@@ -1112,7 +1128,7 @@
         const { data, error } = await sb.from("questions")
           .select("id, label, options, assignee_id, created_at")
           .order("created_at", { ascending: false });
-        if (error) throw error;
+        if (error) return []; // table may not exist yet
         return data || [];
       },
       async getQuestion(id) {
@@ -1149,7 +1165,7 @@
         const { data, error } = await sb.from("tasks")
           .select("id").eq("checklist_item_id", checklistItemId)
           .eq("done", false).limit(1);
-        if (error) throw error;
+        if (error) return false; // column may not exist yet
         return (data || []).length > 0;
       },
       async createFlagTask({ checklistItemId, checklistName, itemLabel, questionLabel, answer, comment, assigneeId }) {
@@ -1170,12 +1186,20 @@
       },
       async listTasks() {
         const { data: { user } } = await sb.auth.getUser();
-        const { data, error } = await sb.from("tasks")
+        let data, error;
+        ({ data, error } = await sb.from("tasks")
           .select("id, title, done, source, created_at, question_answer, flag_comment")
           .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
+          .order("created_at", { ascending: false }));
+        if (error) {
+          // Fallback if new columns not migrated yet
+          ({ data, error } = await sb.from("tasks")
+            .select("id, title, done, created_at")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false }));
+        }
         if (error) throw error;
-        return data || [];
+        return (data || []).map(t => ({ ...t, source: t.source ?? "manual" }));
       },
       async countOpenAssignedTasks() {
         const { data: { user } } = await sb.auth.getUser();

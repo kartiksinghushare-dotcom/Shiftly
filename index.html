@@ -242,7 +242,7 @@
       align-items: center; flex-wrap: wrap;
     }
     .toolbar .search-input {
-      flex: 1; min-width: 0;
+      flex: 1; min-width: 160px;
       padding: var(--space-3) var(--space-4);
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
@@ -689,7 +689,7 @@
       background-size: 10px;
     }
     .task-title {
-      flex: 1; font-size: 15px; min-width: 0;
+      font-size: 15px; min-width: 0;
       word-break: break-word;
       transition: text-decoration 150ms;
     }
@@ -935,7 +935,8 @@
           needs_assignees: "Assign at least one user.",
           needs_days: "Select at least one active day."
         }
-      },
+      }
+    };
 
     // ========== I18N ==========
     const I18n = (() => {
@@ -991,7 +992,7 @@
     const API = {
       async listUsers() {
         const { data: users, error } = await sb.from("profiles")
-          .select("id, full_name, email, role, department, job_title, phone, active")
+          .select("id, full_name, email, role, department, job_title, phone, active, questions_access")
           .order("full_name");
         if (error) throw error;
         const { data: links, error: lErr } = await sb.from("user_managers")
@@ -1145,10 +1146,9 @@
         if (error) throw error;
       },
       async hasPendingFlagTask(checklistItemId) {
-        const { data: { user } } = await sb.auth.getUser();
         const { data, error } = await sb.from("tasks")
           .select("id").eq("checklist_item_id", checklistItemId)
-          .eq("flagged_by", user.id).eq("done", false).limit(1);
+          .eq("done", false).limit(1);
         if (error) throw error;
         return (data || []).length > 0;
       },
@@ -1257,12 +1257,16 @@
         } else if (route === "question-form") {
           setHeader(data?.id ? I18n.t("questions.edit_title") : I18n.t("questions.new_title"), true);
           Views.questionForm(data?.id || null);
+        } else if (route === "checklist-do") {
+          setHeader(I18n.t("checklists.title"), true);
+          Views.checklistDo(data?.id || null);
         }
       }
       function back() {
         if (!last) return go("home");
         if (last.route === "user-form") return go("users");
         if (last.route === "checklist-form") return go("checklists");
+        if (last.route === "checklist-do") return go("checklists");
         if (last.route === "question-form") return go("questions");
         return go("home");
       }
@@ -1563,19 +1567,18 @@
                   <span class="slider"></span>
                 </label>
               </div>
-              <div class="section-title">${escape(I18n.t("user_form.status"))}</div>` : `
-              <div class="section-title">${escape(I18n.t("user_form.status"))}</div>`}
+              <div class="section-title">${escape(I18n.t("user_form.status"))}</div>
               <div class="toggle-row">
                 <div class="toggle-row-info">
                   <div class="toggle-row-label">${escape(I18n.t("user_form.active_label"))}</div>
                   <div class="toggle-row-hint">${escape(I18n.t("user_form.active_hint"))}</div>
                 </div>
                 <label class="switch">
-                  <input type="checkbox" id="f-active" ${user?.active ? "checked" : ""}>
+                  <input type="checkbox" id="f-active" ${user.active ? "checked" : ""}>
                   <span class="slider"></span>
                 </label>
               </div>
-            ${isEdit ? "" : ""}
+            ` : ""}
 
             <div id="form-error" class="error-message" style="text-align:center" hidden></div>
 
@@ -1640,7 +1643,7 @@
               }, managerIds);
             } else {
               const password = document.getElementById("f-password").value;
-              await API.createUser({ ...formData, password, manager_ids: managerIds });
+              await API.createUser({ ...formData, password, manager_ids: managerIds, questions_access: false });
             }
             Router.go("users");
           } catch (err) {
@@ -1660,7 +1663,7 @@
         catch(e) { main.innerHTML = `<div class="error-message">${escape(e.message)}</div>`; return; }
 
         const { checklist, items } = result;
-        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
+        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
         const name = localized(checklist.name);
 
         // Check pending tasks for each item
@@ -1732,7 +1735,7 @@
 
         const listEl = document.getElementById("cl-list");
         const searchEl = document.getElementById("cl-search");
-        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
+        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
         const formatSchedule = (days, time) => {
           let label;
           if (!days || days.length === 0) label = I18n.t("checklists.no_days");
@@ -1771,12 +1774,11 @@
           listEl.querySelectorAll(".checklist-card").forEach(el => {
             el.addEventListener("click", () => {
               const profile = App.state.profile;
-              if (profile.role === "user" && !profile.questions_access) {
-                Views.checklistDo(el.dataset.id);
-                document.getElementById("header-title").textContent = "";
-                document.getElementById("back-btn").hidden = false;
-              } else {
+              const canEdit = profile.role === "admin" || profile.questions_access;
+              if (canEdit) {
                 Router.go("checklist-form", { id: el.dataset.id });
+              } else {
+                Router.go("checklist-do", { id: el.dataset.id });
               }
             });
           });
@@ -1803,7 +1805,7 @@
           }
         }
 
-        const localized = (j) => (typeof j === "string" ? j : (j?.[I18n.getLang()] || j?.en || j?.ar || Object.values(j || {})[0] || ""));
+        const localized = (j) => (typeof j === "string" ? j : (j?.en || Object.values(j || {})[0] || ""));
         const days = existing?.active_days || [0,1,2,3,4,5,6];
         const targetTime = existing?.target_time ? existing.target_time.slice(0,5) : "";
         const dayNames = I18n.t("checklists.days_short");
@@ -2263,6 +2265,7 @@
 
           listEl.querySelectorAll(".task-delete").forEach(btn => {
             btn.addEventListener("click", async () => {
+              if (!confirm(I18n.t("tasks.delete_confirm"))) return;
               const id = btn.closest(".task-row").dataset.id;
               btn.closest(".task-row").style.opacity = "0.4";
               try {
